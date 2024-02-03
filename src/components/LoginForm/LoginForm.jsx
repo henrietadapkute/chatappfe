@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import * as usersService from '../../utilities/users-service';
+import { Button } from '../ui/button'
+
 
 export default function LoginForm({ setUser }) {
   const [credentials, setCredentials] = useState({
@@ -36,6 +38,7 @@ export default function LoginForm({ setUser }) {
           <label>Password</label>
           <input type="password" name="password" value={credentials.password} onChange={handleChange} required />
           <button type="submit">LOG IN</button>
+          <Button>Yo</Button>
         </form>
       </div>
       <p className="error-message">&nbsp;{error}</p>
