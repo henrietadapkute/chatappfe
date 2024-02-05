@@ -19,12 +19,15 @@ export default function ChatListView() {
   const [chats, setChats] = useState([])
 
   const fetchChats = async () => {
-    const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats`)
+    const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/previews`)
     setChats(response)
   }
+  
   useEffect(() => {
     fetchChats()
   }, [])
+
+  console.log(chats)
 
   return (
     <div className="flex flex-col w-full h-full items-center justify-center p-2">
