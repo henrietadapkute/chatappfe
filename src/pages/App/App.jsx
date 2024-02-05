@@ -8,7 +8,7 @@ import MainPage from "../MainPage/MainPage";
 function App() {
   const [user, setUser] = useState(getUser());
 
-  return <>{user ? <AuthPage setUser={setUser} /> : <MainPage />}</>;
+  return <>{!user ? <AuthPage setUser={setUser} /> : <MainPage />}</>;
 }
 
 export default App;

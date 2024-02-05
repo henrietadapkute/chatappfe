@@ -12,9 +12,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Link } from 'react-router-dom'
 
-export default function ChatView() {
+export default function ChatView({ chat }) {
   return (
-    <Link to="/chats/1">
+    <Link to={`/chats/${chat._id}`}>
     <div>
       <div className="cursor-pointer flex min-w-0 gap-x-4">
         <Avatar className="flex-none">
