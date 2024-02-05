@@ -28,7 +28,7 @@ export default function ChatListView() {
           </Button>
         </div>
       </div>
-      <ScrollArea className="h-full">
+      <ScrollArea className="h-full w-full">
         <div className="flex flex-col gap-2 pt-1">
           <ChatView />
           <ChatView />
