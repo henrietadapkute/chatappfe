@@ -12,15 +12,29 @@ import ChatView from "../ChatView/ChatView";
 import CreateChatForm from "../CreateChatForm/CreateChatForm"
 import { Button } from "@/components/ui/button";
 import { Plus, User } from "lucide-react";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
+import sendRequest from "@/utilities/send-request"
 
 // List of conversations available
 export default function ChatListView() {
+
+  const [chats, setChats] = useState([])
   const [showCreateChatForm, setShowCreateChatForm] = useState(false)
 
   const toggleCreateChatForm = () => {
     setShowCreateChatForm(!showCreateChatForm)
   }
+
+  const fetchChats = async () => {
+    const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/previews`)
+    setChats(response)
+  }
+  
+  useEffect(() => {
+    fetchChats()
+  }, [])
+
 
   return (
     <div className="flex flex-col w-full h-full items-center justify-center p-2">
@@ -37,24 +51,13 @@ export default function ChatListView() {
           </Button>
         </div>
       </div>
-      <ScrollArea className="h-full">
+      <ScrollArea className="h-full w-full">
         <div className="flex flex-col gap-2 pt-1">
-           {showCreateChatForm && <CreateChatForm />}
-          <ChatView />
-          <ChatView />
-          <ChatView />
-          <ChatView />
-          <ChatView />
-          <ChatView />
-          <ChatView />
-          <ChatView />
-          <ChatView />
-          <ChatView />
-          <ChatView />
-          <ChatView />
-          <ChatView />
-          <ChatView />
-          <ChatView />
+
+          {showCreateChatForm && <CreateChatForm />}
+          {chats.map((chat) => (
+            <ChatView chat={chat} />
+          ))}
         </div>
       </ScrollArea>
     </div>

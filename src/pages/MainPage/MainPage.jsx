@@ -5,8 +5,11 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import 'react-router-dom'
 
-import { ScrollArea } from "@/components/ui/scroll-area";
+import MessageListView from "@/components/MessageListView/MessageListView";
+import MessageView from "@/components/MessageView/MessageView";
+import {Routes, Route} from 'react-router-dom';
 
 export default function MainPage() {
   return (
@@ -21,9 +24,9 @@ export default function MainPage() {
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel defaultSize={75}>
-          <div className="flex h-full items-center justify-center p-6">
-            <span className="font-semibold">Content</span>
-          </div>
+          <Routes>
+            <Route path="/chats/:chatId" element={<MessageListView />} />
+          </Routes>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
