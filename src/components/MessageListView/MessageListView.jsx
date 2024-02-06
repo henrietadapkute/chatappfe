@@ -16,24 +16,24 @@ import sendRequest from "@/utilities/send-request"
 
 export default function MessageListView() {
 
-    const { messages, addMessage, getMessages } = useChat()
+    const { messages, addMessage, getMessages, chats } = useChat()
 
     const { chatId } = useParams()
+    const currentChat = chats.find((chat) => chat.chatId === chatId)
     const [messageInput, setMessageInput] = useState('')
-
     const fetchMessages = () => {
         getMessages(chatId)
     }
-
+    console.log(currentChat)
     const handleChange = (evt) => {
         setMessageInput(evt.target.value)
     }
-
+    
     const handleSend = async () => {
         addMessage(messageInput, chatId)
         setMessageInput('')
     }
-
+    
     useEffect(() => {
         fetchMessages()
     }, [chatId])
@@ -44,7 +44,7 @@ export default function MessageListView() {
     <div className="w-full flex justify-between items-center p-2 my-2 border-b border-b-2">
         <div className="flex items-center justify-center flex-grow">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 mr-2">
-            Recipient Name
+            {currentChat.otherParticipant.username}
             </h2>
             <Avatar className="flex-none">
             <AvatarImage src="https://github.com/shadcn.png" />
