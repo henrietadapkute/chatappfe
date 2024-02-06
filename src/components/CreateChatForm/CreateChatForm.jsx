@@ -14,6 +14,7 @@ import {
     FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import sendRequest from '@/utilities/send-request'
 
 const formSchema = z.object({
   participants: z.string().min(2, {
@@ -21,7 +22,7 @@ const formSchema = z.object({
   }),
 })
 
-export default function CreateChatForm() {
+export default function CreateChatForm({}) {
     const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,30 +33,16 @@ export default function CreateChatForm() {
     const onSubmit = async () => {
     try {
         const username = form.getValues("participants");
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/chats/search/user?username=${username}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`)
-        }
-        const user = await response.json()
+        const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/search/user?username=${username}`)
+        const user = response
+
         console.log('User found', user)
         if (user) {
-            const chatResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/chats/create/chat`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ participants: user._id }),
-            });
+            const chatResponse = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/create/chat`, 'POST', {
+                participants: user._id
+            })
 
-            if (!chatResponse.ok) {
-                throw new Error(`HTTP error! Status: ${chatResponse.status}`)
-            }
-            const chatData = await chatResponse.json();
+            const chatData = chatResponse
             console.log('Chat created', chatData)
             form.reset()
         } else {

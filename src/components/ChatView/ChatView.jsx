@@ -14,7 +14,8 @@ import { Link } from 'react-router-dom'
 
 export default function ChatView({ chat }) {
   const maxPreviewLength = 30
-  const lastMessage = chat.latestMessage.content
+  const lastMessage = chat.latestMessage?.content ?
+  chat.latestMessage.content : ''
   const messagePreview = lastMessage.length > maxPreviewLength 
   ? lastMessage.slice(0, maxPreviewLength) + '...'
   : lastMessage

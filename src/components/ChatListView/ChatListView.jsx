@@ -56,7 +56,7 @@ export default function ChatListView() {
 
           {showCreateChatForm && <CreateChatForm />}
           {chats.map((chat) => (
-            <ChatView chat={chat} />
+            <ChatView key={chat.chatId} chat={chat} />
           ))}
         </div>
       </ScrollArea>
