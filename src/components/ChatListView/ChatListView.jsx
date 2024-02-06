@@ -57,8 +57,9 @@ export default function ChatListView({ isChatDeleted, handleChatDelete}) {
         <div className="flex flex-col gap-2 pt-1">
 
           {showCreateChatForm && <CreateChatForm />}
-          {chats.map((chat) => (
-            <ChatView key={chat.chatId} chat={chat} />
+          {chats.map((chat) => ( chat.chatType === "private" 
+          ? <ChatView key={chat.chatId} chat={chat} />
+          : <p>"Group"</p>
           ))}
         </div>
       </ScrollArea>
