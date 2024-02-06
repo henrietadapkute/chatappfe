@@ -15,11 +15,13 @@ import { Plus, User } from "lucide-react";
 
 import { useEffect, useState } from "react";
 import sendRequest from "@/utilities/send-request"
+import { useChat } from "@/context/ChatContext";
 
 // List of conversations available
 export default function ChatListView() {
 
-  const [chats, setChats] = useState([])
+  const { chats, setChats, getChatPreviews, messages } = useChat()
+
   const [showCreateChatForm, setShowCreateChatForm] = useState(false)
 
   const toggleCreateChatForm = () => {
@@ -27,13 +29,12 @@ export default function ChatListView() {
   }
 
   const fetchChats = async () => {
-    const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/previews`)
-    setChats(response)
+    getChatPreviews()
   }
   
   useEffect(() => {
     fetchChats()
-  }, [])
+  }, [messages])
 
 
   return (

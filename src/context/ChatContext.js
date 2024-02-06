@@ -18,7 +18,6 @@ export const ChatProvider = ({children}) => {
 
     const getMessages = async (chatId) => {
         const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/${chatId}/messages`)
-        console.log(response)
         setMessages(response)
     }
 

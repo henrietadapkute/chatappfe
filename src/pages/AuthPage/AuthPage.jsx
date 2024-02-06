@@ -1,8 +1,10 @@
 import SignUpForm from "@/components/SignUpForm/SignUpForm";
 import LoginForm from "@/components/LoginForm/LoginForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useChat } from '@/context/ChatContext'
 
-export default function AuthPage({ setUser }) {
+export default function AuthPage() {
+  const { setUser } = useChat()
   return (
     <main>
       <div className="hidden items-start justify-center gap-6 rounded-lg p-8 md:grid">
