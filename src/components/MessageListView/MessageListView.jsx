@@ -1,6 +1,6 @@
 // Displays list of MessageViews()
 
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -14,8 +14,7 @@ import { useChat } from '@/context/ChatContext'
 import sendRequest from "@/utilities/send-request"
 
 export default function MessageListView() {
-
-
+    const navigate = useNavigate()
     const [isChatDeleted, setIsChatDeleted] = useState(false)
     const { messages, addMessage, getMessages, setMessages, chats } = useChat()
     const { chatId } = useParams()
@@ -43,6 +42,7 @@ export default function MessageListView() {
         await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/${chatId}`, 'DELETE')
         setMessages([])
         setIsChatDeleted(true)
+        navigate('/chats')
         } catch (error) {
             console.error("Error deleting chat:", error)
         }
