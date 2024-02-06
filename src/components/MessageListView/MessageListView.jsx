@@ -17,7 +17,7 @@ export default function MessageListView() {
 
 
     const [isChatDeleted, setIsChatDeleted] = useState(false)
-    const { messages, addMessage, getMessages, chats } = useChat()
+    const { messages, addMessage, getMessages, setMessages, chats } = useChat()
     const { chatId } = useParams()
     const currentChat = chats.find((chat) => chat.chatId === chatId)
     const [messageInput, setMessageInput] = useState('')
