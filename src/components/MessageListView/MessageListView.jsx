@@ -10,14 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Trash2 } from 'lucide-react';
 
 import MessageView from "@/components/MessageView/MessageView"
-
-
 import sendRequest from "@/utilities/send-request"
 
 export default function MessageListView() {
 
     const { chatId } = useParams()
     const [messages, setMessages] = useState([])
+    const [isChatDeleted, setIsChatDeleted] = useState(false)
 
     const fetchMessages = async () => {
         const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/${chatId}/messages`)
@@ -30,7 +29,18 @@ export default function MessageListView() {
 
     console.log(messages)
 
+    const deleteChat = async () => {
+        try {
+        await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/${chatId}`, 'DELETE')
+        setMessages([])
+        setIsChatDeleted(true)
+        } catch (error) {
+            console.error("Error deleting chat:", error)
+        }
+    }
 
+    const filteredMessages = messages.filter((message) => !message.isDeleted)
+    
   return (
     <div className="flex flex-col h-full">
     <div className="w-full flex justify-between items-center p-2 my-2 border-b border-b-2">
@@ -43,14 +53,14 @@ export default function MessageListView() {
             <AvatarFallback>CN</AvatarFallback>
             </Avatar>
         </div>
-        <Button variant="destructive">
+        <Button variant="destructive" onClick={deleteChat}>
             <Trash2 />
         </Button>
     </div>
         <ScrollArea className="flex-grow w-full">
         <div className="flex flex-col gap-2 pt-1">
-            {messages.map((message) => (
-                <MessageView message={message} />
+            {filteredMessages.map((message) => (
+                <MessageView key={message._id} message={message} isDeleted={isChatDeleted} />
             ))}
         </div>
         </ScrollArea>

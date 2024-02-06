@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import sendRequest from "@/utilities/send-request"
 
 // List of conversations available
-export default function ChatListView() {
+export default function ChatListView({ isChatDeleted, handleChatDelete}) {
 
   const [chats, setChats] = useState([])
   const [showCreateChatForm, setShowCreateChatForm] = useState(false)
@@ -35,6 +35,7 @@ export default function ChatListView() {
     fetchChats()
   }, [])
 
+   const filteredChats = isChatDeleted ? chats.filter((chat) => chat.exists) : chats
 
   return (
     <div className="flex flex-col w-full h-full items-center justify-center p-2">
@@ -55,8 +56,8 @@ export default function ChatListView() {
         <div className="flex flex-col gap-2 pt-1">
 
           {showCreateChatForm && <CreateChatForm />}
-          {chats.map((chat) => (
-            <ChatView chat={chat} />
+           {filteredChats.map((chat) => (
+            <ChatView key={chat.chatId} chat={chat} />
           ))}
         </div>
       </ScrollArea>
