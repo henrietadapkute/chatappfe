@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import sendRequest from '@/utilities/send-request'
+import { useChat } from '@/context/ChatContext'
 
 const formSchema = z.object({
   participants: z.string().min(2, {
@@ -23,6 +24,7 @@ const formSchema = z.object({
 })
 
 export default function CreateChatForm({}) {
+  const { addChat } = useChat()
     const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,27 +33,16 @@ export default function CreateChatForm({}) {
   });
 
     const onSubmit = async () => {
-    try {
         const username = form.getValues("participants");
         const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/search/user?username=${username}`)
         const user = response
 
         console.log('User found', user)
         if (user) {
-            const chatResponse = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/create/chat`, 'POST', {
-                participants: user._id
-            })
-
-            const chatData = chatResponse
-            console.log('Chat created', chatData)
-            form.reset()
-        } else {
-            console.log('User not found');
+          addChat({participants: user._id})
+          form.reset()
         }
-    } catch (error) {
-        console.error(error);
-    }
-}
+      }
 
   return (
     <Form {...form}>

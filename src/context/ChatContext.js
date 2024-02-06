@@ -22,9 +22,7 @@ export const ChatProvider = ({children}) => {
     }
 
     const addChat = async (chat) => {
-        await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/create/chat`, 'POST', {
-            participants: user._id
-        })
+        await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/create/chat`, 'POST', chat)
         getChatPreviews()
     }
 
