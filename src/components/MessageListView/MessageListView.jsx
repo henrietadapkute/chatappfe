@@ -10,24 +10,33 @@ import { Input } from "@/components/ui/input";
 import { Trash2 } from 'lucide-react';
 
 import MessageView from "@/components/MessageView/MessageView"
+import { useChat } from '@/context/ChatContext'
 import sendRequest from "@/utilities/send-request"
 
 export default function MessageListView() {
 
-    const { chatId } = useParams()
-    const [messages, setMessages] = useState([])
+
     const [isChatDeleted, setIsChatDeleted] = useState(false)
-
-    const fetchMessages = async () => {
-        const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/${chatId}/messages`)
-        setMessages(response)
+    const { messages, addMessage, getMessages, chats } = useChat()
+    const { chatId } = useParams()
+    const currentChat = chats.find((chat) => chat.chatId === chatId)
+    const [messageInput, setMessageInput] = useState('')
+    const fetchMessages = () => {
+        getMessages(chatId)
     }
-
+    console.log(currentChat)
+    const handleChange = (evt) => {
+        setMessageInput(evt.target.value)
+    }
+    
+    const handleSend = async () => {
+        addMessage(messageInput, chatId)
+        setMessageInput('')
+    }
+    
     useEffect(() => {
         fetchMessages()
-    }, [])
-
-    console.log(messages)
+    }, [chatId])
 
     const deleteChat = async () => {
         try {
@@ -46,7 +55,7 @@ export default function MessageListView() {
     <div className="w-full flex justify-between items-center p-2 my-2 border-b border-b-2">
         <div className="flex items-center justify-center flex-grow">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 mr-2">
-            Recipient Name
+            {currentChat.otherParticipant.username}
             </h2>
             <Avatar className="flex-none">
             <AvatarImage src="https://github.com/shadcn.png" />
@@ -59,14 +68,14 @@ export default function MessageListView() {
     </div>
         <ScrollArea className="flex-grow w-full">
         <div className="flex flex-col gap-2 pt-1">
-            {filteredMessages.map((message) => (
-                <MessageView key={message._id} message={message} isDeleted={isChatDeleted} />
+            {messages.map((message) => (
+                <MessageView key={message._id} message={message} />
             ))}
         </div>
         </ScrollArea>
         <div className="flex p-2">
-            <Input type="text" placeholder="Write Message..."/>
-            <Button>Send</Button>
+            <Input value={messageInput} onChange={handleChange} type="text" placeholder="Write Message..."/>
+            <Button onClick={handleSend}>Send</Button>
         </div>
     </div>
   )

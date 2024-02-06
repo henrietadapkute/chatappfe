@@ -15,11 +15,13 @@ import { Plus, User } from "lucide-react";
 
 import { useEffect, useState } from "react";
 import sendRequest from "@/utilities/send-request"
+import { useChat } from "@/context/ChatContext";
 
 // List of conversations available
 export default function ChatListView({ isChatDeleted, handleChatDelete}) {
 
-  const [chats, setChats] = useState([])
+  const { chats, setChats, getChatPreviews, messages } = useChat()
+
   const [showCreateChatForm, setShowCreateChatForm] = useState(false)
 
   const toggleCreateChatForm = () => {
@@ -27,13 +29,12 @@ export default function ChatListView({ isChatDeleted, handleChatDelete}) {
   }
 
   const fetchChats = async () => {
-    const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/previews`)
-    setChats(response)
+    getChatPreviews()
   }
   
   useEffect(() => {
     fetchChats()
-  }, [])
+  }, [messages])
 
    const filteredChats = isChatDeleted ? chats.filter((chat) => chat.exists) : chats
 
@@ -56,7 +57,7 @@ export default function ChatListView({ isChatDeleted, handleChatDelete}) {
         <div className="flex flex-col gap-2 pt-1">
 
           {showCreateChatForm && <CreateChatForm />}
-           {filteredChats.map((chat) => (
+          {chats.map((chat) => (
             <ChatView key={chat.chatId} chat={chat} />
           ))}
         </div>

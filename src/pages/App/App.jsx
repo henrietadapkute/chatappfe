@@ -1,14 +1,20 @@
 import { Container } from "react-bootstrap";
 import AuthPage from "../AuthPage/AuthPage";
 import { getUser } from "../../utilities/users-service";
-import { useState } from "react";
+import { useEffect } from "react";
 import { Button } from "../../components/ui/button";
 import MainPage from "../MainPage/MainPage";
 
-function App() {
-  const [user, setUser] = useState(getUser());
+import { useChat } from "@/context/ChatContext";
 
-  return <>{!user ? <AuthPage setUser={setUser} /> : <MainPage />}</>;
+function App() {
+  const { user, setUser } = useChat()
+
+  useEffect(() => {
+    setUser(getUser())
+  }, [])
+
+  return <>{!user ? <AuthPage /> : <MainPage />}</>;
 }
 
 export default App;
