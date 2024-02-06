@@ -5,8 +5,11 @@ import { useState } from "react";
 import { Button } from "../../components/ui/button";
 import MainPage from "../MainPage/MainPage";
 
+import { useChat } from "@/context/ChatContext";
+
 function App() {
-  const [user, setUser] = useState(getUser());
+  const { user, setUser } = useChat()
+  setUser(getUser)
 
   return <>{!user ? <AuthPage setUser={setUser} /> : <MainPage />}</>;
 }

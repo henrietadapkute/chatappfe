@@ -10,25 +10,33 @@ import { Input } from "@/components/ui/input";
 import { Trash2 } from 'lucide-react';
 
 import MessageView from "@/components/MessageView/MessageView"
-
+import { useChat } from '@/context/ChatContext'
 
 import sendRequest from "@/utilities/send-request"
 
 export default function MessageListView() {
 
-    const { chatId } = useParams()
-    const [messages, setMessages] = useState([])
+    const { messages, addMessage, getMessages } = useChat()
 
-    const fetchMessages = async () => {
-        const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/${chatId}/messages`)
-        setMessages(response)
+    const { chatId } = useParams()
+    const [messageInput, setMessageInput] = useState('')
+
+    const fetchMessages = () => {
+        getMessages(chatId)
+    }
+
+    const handleChange = (evt) => {
+        setMessageInput(evt.target.value)
+    }
+
+    const handleSend = async () => {
+        addMessage(messageInput, chatId)
+        setMessageInput('')
     }
 
     useEffect(() => {
         fetchMessages()
-    }, [])
-
-    console.log(messages)
+    }, [chatId])
 
 
   return (
@@ -50,13 +58,13 @@ export default function MessageListView() {
         <ScrollArea className="flex-grow w-full">
         <div className="flex flex-col gap-2 pt-1">
             {messages.map((message) => (
-                <MessageView message={message} />
+                <MessageView key={message._id} message={message} />
             ))}
         </div>
         </ScrollArea>
         <div className="flex p-2">
-            <Input type="text" placeholder="Write Message..."/>
-            <Button>Send</Button>
+            <Input value={messageInput} onChange={handleChange} type="text" placeholder="Write Message..."/>
+            <Button onClick={handleSend}>Send</Button>
         </div>
     </div>
   )
