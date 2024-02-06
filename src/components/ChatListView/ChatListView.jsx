@@ -20,7 +20,7 @@ import { useChat } from "@/context/ChatContext";
 // List of conversations available
 export default function ChatListView({ isChatDeleted, handleChatDelete}) {
 
-  const { chats, setChats, getChatPreviews, messages } = useChat()
+  const { user, chats, setChats, getChatPreviews, messages } = useChat()
 
   const [showCreateChatForm, setShowCreateChatForm] = useState(false)
 
