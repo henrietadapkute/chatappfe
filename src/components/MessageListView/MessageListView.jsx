@@ -23,7 +23,6 @@ export default function MessageListView() {
     const fetchMessages = () => {
         getMessages(chatId)
     }
-    console.log(currentChat)
     const handleChange = (evt) => {
         setMessageInput(evt.target.value)
     }
@@ -55,7 +54,7 @@ export default function MessageListView() {
     <div className="w-full flex justify-between items-center p-2 my-2 border-b border-b-2">
         <div className="flex items-center justify-center flex-grow">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 mr-2">
-            {currentChat.otherParticipant.username}
+            {currentChat.otherParticipant?.username}
             </h2>
             <Avatar className="flex-none">
             <AvatarImage src="https://github.com/shadcn.png" />

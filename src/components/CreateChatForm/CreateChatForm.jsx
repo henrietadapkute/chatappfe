@@ -33,28 +33,35 @@ export default function CreateChatForm({}) {
   });
 
     const onSubmit = async () => {
-        const username = form.getValues("participants");
-        const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/search/user?username=${username}`)
-        const user = response
+        const usernames = form.getValues("participants").split(', ');
+        try {
+        const usersPromise = usernames.map(async (username) => await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/search/user?username=${username}`))
+        const users = await Promise.all(usersPromise)
+        // const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/search/user?username=${username}`)
+        // const user = response
 
-        console.log('User found', user)
-        if (user) {
-          addChat({participants: user._id})
+        // console.log('User found', user)
+         if (users.every(user => user)) {
+          const userIds = users.map(user => user._id);
+          addChat({participants: userIds})
           form.reset()
         }
+      } catch {
+
       }
+    }
 
   return (
     <Form {...form}>
-    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+    <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField 
         control={form.control}
         name="participants"
         render={({ field }) => (
-            <FormItem>
+            <FormItem className="p-2">
             <FormLabel>Search for a user</FormLabel>
             <FormControl>
-            <Input placeholder="username"
+            <Input className="w-4/5" placeholder="username"
             {...field}
             />
             </FormControl>
@@ -65,7 +72,7 @@ export default function CreateChatForm({}) {
             </FormItem>
         )}
         />
-        <Button type="submit">Create Chat</Button>
+        <Button className="my-4" type="submit">Create Chat</Button>
     </form>
     </Form>
   )
