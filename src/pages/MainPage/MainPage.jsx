@@ -6,12 +6,19 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import 'react-router-dom'
+import { useState } from "react";
 
 import MessageListView from "@/components/MessageListView/MessageListView";
 import MessageView from "@/components/MessageView/MessageView";
 import {Routes, Route} from 'react-router-dom';
 
 export default function MainPage() {
+  const [isChatDeleted, setIsChatDeleted] = useState(false)
+
+  const handleChatDelete = () => {
+    setIsChatDeleted(true);
+  }
+
   return (
     <div className="flex flex-col h-screen">
       <NavBar />
@@ -20,7 +27,7 @@ export default function MainPage() {
         className="flex-grow rounded-lg border"
       >
         <ResizablePanel defaultSize={25}>
-          <ChatListView />
+          <ChatListView isChatDeleted={isChatDeleted} handleChatDelete={handleChatDelete}/>
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel defaultSize={75}>

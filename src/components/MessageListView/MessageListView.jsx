@@ -11,13 +11,13 @@ import { Trash2 } from 'lucide-react';
 
 import MessageView from "@/components/MessageView/MessageView"
 import { useChat } from '@/context/ChatContext'
-
 import sendRequest from "@/utilities/send-request"
 
 export default function MessageListView() {
 
-    const { messages, addMessage, getMessages, chats } = useChat()
 
+    const [isChatDeleted, setIsChatDeleted] = useState(false)
+    const { messages, addMessage, getMessages, chats } = useChat()
     const { chatId } = useParams()
     const currentChat = chats.find((chat) => chat.chatId === chatId)
     const [messageInput, setMessageInput] = useState('')
@@ -38,7 +38,18 @@ export default function MessageListView() {
         fetchMessages()
     }, [chatId])
 
+    const deleteChat = async () => {
+        try {
+        await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/${chatId}`, 'DELETE')
+        setMessages([])
+        setIsChatDeleted(true)
+        } catch (error) {
+            console.error("Error deleting chat:", error)
+        }
+    }
 
+    const filteredMessages = messages.filter((message) => !message.isDeleted)
+    
   return (
     <div className="flex flex-col h-full">
     <div className="w-full flex justify-between items-center p-2 my-2 border-b border-b-2">
@@ -51,7 +62,7 @@ export default function MessageListView() {
             <AvatarFallback>CN</AvatarFallback>
             </Avatar>
         </div>
-        <Button variant="destructive">
+        <Button variant="destructive" onClick={deleteChat}>
             <Trash2 />
         </Button>
     </div>

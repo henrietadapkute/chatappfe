@@ -18,7 +18,7 @@ import sendRequest from "@/utilities/send-request"
 import { useChat } from "@/context/ChatContext";
 
 // List of conversations available
-export default function ChatListView() {
+export default function ChatListView({ isChatDeleted, handleChatDelete}) {
 
   const { chats, setChats, getChatPreviews, messages } = useChat()
 
@@ -36,6 +36,7 @@ export default function ChatListView() {
     fetchChats()
   }, [messages])
 
+   const filteredChats = isChatDeleted ? chats.filter((chat) => chat.exists) : chats
 
   return (
     <div className="flex flex-col w-full h-full items-center justify-center p-2">
