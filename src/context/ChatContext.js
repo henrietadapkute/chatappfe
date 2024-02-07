@@ -32,6 +32,7 @@ export const ChatProvider = ({children}) => {
             content: message
         })
         setMessages([...messages, newMessage])
+        getMessages()
         getChatPreviews()
     }
 
