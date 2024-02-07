@@ -58,7 +58,7 @@ export default function MessageListView() {
         addMessage(messageInput, chatId)
         setMessageInput('')
     }
-    
+    // Use Effect to receive Message
     
     useEffect(() => {
         socket.on("receive_message", (data) => {
