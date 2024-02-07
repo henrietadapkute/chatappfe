@@ -36,9 +36,9 @@ export default function ChatListView({ isChatDeleted, handleChatDelete}) {
     getChatPreviews()
   }
   
-  // useEffect(() => {
-  //   fetchChats()
-  // }, [messages])
+  useEffect(() => {
+    fetchChats()
+  }, [messages])
 
    const filteredChats = isChatDeleted ? chats.filter((chat) => chat.exists) : chats
 
