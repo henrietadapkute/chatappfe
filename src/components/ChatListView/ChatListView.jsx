@@ -40,8 +40,6 @@ export default function ChatListView({ isChatDeleted, handleChatDelete}) {
     fetchChats()
   }, [messages])
 
-   const filteredChats = isChatDeleted ? chats.filter((chat) => chat.exists) : chats
-
   return (
     <div className="flex flex-col w-full h-full items-center justify-center p-2">
       <div className="flex w-full my-3 self-start justify-between">

@@ -17,15 +17,16 @@ const socket = io.connect("http://localhost:4000")
 
 
 export default function MessageListView() {
+    const { chatId } = useParams()
     const navigate = useNavigate()
     const { messages, addMessage, getMessages, setMessages, chats, setCurrentChatId } = useChat()
-    const { chatId } = useParams()
     const currentChat = chats.find((chat) => chat.chatId === chatId)
     setCurrentChatId(chatId)
     const [messageInput, setMessageInput] = useState('')
 
     const [error, setError] = useState()
     const [messageRecieved, setMessageRecieved] = useState('')
+
     const fetchMessages = () => {
         getMessages(chatId)
         console.log(chatId)
@@ -38,9 +39,12 @@ export default function MessageListView() {
         joinRoom(chatId);
         return () => {
             socket.off('receive_message')
-            fetchMessages()
         }
-    }, [chatId]);
+    }, []);
+
+    useEffect(() => {
+        fetchMessages()
+    }, [chatId])
 
     const joinRoom = (chatId) => {
         socket.emit("join_room", chatId)
