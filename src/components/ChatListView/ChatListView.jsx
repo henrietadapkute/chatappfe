@@ -12,7 +12,7 @@ import ChatView from "../ChatView/ChatView";
 import CreateChatForm from "../CreateChatForm/CreateChatForm"
 import { Button } from "@/components/ui/button";
 import { Plus, User } from "lucide-react";
-
+import SheetSide from "@/components/UserProfile/UserProfile"
 import { useEffect, useState } from "react";
 import sendRequest from "@/utilities/send-request"
 import { useChat } from "@/context/ChatContext";
@@ -21,11 +21,15 @@ import { useChat } from "@/context/ChatContext";
 export default function ChatListView({ isChatDeleted, handleChatDelete}) {
 
   const { user, chats, setChats, getChatPreviews, messages } = useChat()
-
   const [showCreateChatForm, setShowCreateChatForm] = useState(false)
+  const [showProfileSheet, setShowProfileSheet] = useState(false)
 
   const toggleCreateChatForm = () => {
     setShowCreateChatForm(!showCreateChatForm)
+  }
+  const toggleProfileSheet = () => {
+    setShowProfileSheet(!showProfileSheet)
+   
   }
 
   const fetchChats = async () => {
@@ -44,19 +48,21 @@ export default function ChatListView({ isChatDeleted, handleChatDelete}) {
         <h2 className="text-3xl font-bold tracking-tight text-gray-900">
           Messages
         </h2>
-        <div className="self-end">
+        <div className="self-end flex">
           <Button className="mx-2" onClick={toggleCreateChatForm}>
             <Plus />
           </Button>
-          <Button className="mx-2">
-            <User />
-          </Button>
+          <div className="mx-2">
+            <SheetSide />
+          </div>
         </div>
       </div>
       <ScrollArea className="h-full w-full">
         <div className="flex flex-col gap-2 pt-1">
-
+          
           {showCreateChatForm && <CreateChatForm />}
+
+          {showProfileSheet && <SheetSide />}
           {chats.map((chat) => ( chat.chatType === "private" 
           ? <ChatView key={chat.chatId} chat={chat} />
           : <p>"Group"</p>
