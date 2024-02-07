@@ -9,7 +9,6 @@ import { Trash2 } from 'lucide-react';
 import MessageView from "@/components/MessageView/MessageView"
 import { useChat } from '@/context/ChatContext'
 import sendRequest from "@/utilities/send-request"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 // SOCKET
 import io from "socket.io-client"
 const socket = io.connect("http://localhost:4000")
@@ -23,13 +22,11 @@ export default function MessageListView() {
     const currentChat = chats.find((chat) => chat.chatId === chatId)
     setCurrentChatId(chatId)
     const [messageInput, setMessageInput] = useState('')
-
     const [error, setError] = useState()
     const [messageRecieved, setMessageRecieved] = useState('')
 
     const fetchMessages = () => {
         getMessages(chatId)
-        console.log(chatId)
     }
     const handleChange = (evt) => {
         setMessageInput(evt.target.value)
@@ -61,18 +58,9 @@ export default function MessageListView() {
         addMessage(messageInput, chatId)
         setMessageInput('')
     }
-
-    socket.on('user_disconnected', (data) => {
-        console.log(`User Disconnected: ${data.userId}`)
-        // going to impliment a pop up 
-        
-    })
-    
+    // Use Effect to receive Message
     
     useEffect(() => {
-        fetchMessages({chatId})
-    }, [chatId])
-
         socket.on("receive_message", (data) => {
             setMessageRecieved(data.messageInput)
             setMessageInput('')
@@ -117,13 +105,10 @@ export default function MessageListView() {
              {/* {messageRecieved}  */}
         </ScrollArea>
         { error && <p>{error}</p>}
-        <div className="flex p-2">
-            <Input value={messageInput} onChange={(event) => {
-                setMessageInput(event.target.value)
-            }} type="text" placeholder="Write Message..."/>
-            <Button className="ml-2" onClick={sendMessage}>Send</Button>
-           
-        </div>
+        <form onSubmit={sendMessage} className="flex p-2">
+            <Input value={messageInput} onChange={handleChange} type="text" placeholder="Write Message..."/>
+            <Button className="ml-2" type="submit">Send</Button>
+        </form>
     </div>
   )
 }
