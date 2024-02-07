@@ -9,6 +9,7 @@ import { Trash2 } from 'lucide-react';
 import MessageView from "@/components/MessageView/MessageView"
 import { useChat } from '@/context/ChatContext'
 import sendRequest from "@/utilities/send-request"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 // SOCKET
 import io from "socket.io-client"
 const socket = io.connect("http://localhost:4000")
@@ -45,6 +46,12 @@ export default function MessageListView() {
         addMessage(messageInput, chatId)
         setMessageInput('')
     }
+
+    socket.on('user_disconnected', (data) => {
+        console.log(`User Disconnected: ${data.userId}`)
+        // going to impliment a pop up 
+        
+    })
     
     
     useEffect(() => {
@@ -94,6 +101,7 @@ export default function MessageListView() {
         </div> 
              {/* {messageRecieved}  */}
         </ScrollArea>
+        
         <div className="flex p-2">
             <Input value={messageInput} onChange={(event) => {
                 setMessageInput(event.target.value)
