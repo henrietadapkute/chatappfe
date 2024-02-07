@@ -1,17 +1,17 @@
 // Displays list of MessageViews()
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Input } from "@/components/ui/input";
 import { Trash2 } from 'lucide-react';
-
 import MessageView from "@/components/MessageView/MessageView"
 import { useChat } from '@/context/ChatContext'
 import sendRequest from "@/utilities/send-request"
+// SOCKET
+import io from "socket.io-client"
+const socket = io.connect("http://localhost:4000")
 
 
 
@@ -23,28 +23,47 @@ export default function MessageListView() {
     setCurrentChatId(chatId)
     const [messageInput, setMessageInput] = useState('')
     const [error, setError] = useState()
-
+    const [messageRecieved, setMessageRecieved] = useState('')
     const fetchMessages = () => {
         getMessages(chatId)
     }
     const handleChange = (evt) => {
         setMessageInput(evt.target.value)
     }
+
+    useEffect(() => {
+        joinRoom(chatId);
+        return () => {
+            socket.off('receive_message')
+            fetchMessages()
+        }
+    }, [chatId]);
+
+    const joinRoom = (chatId) => {
+        socket.emit("join_room", chatId)
+    }
     
-    const handleSend = async (evt) => {
+    const sendMessage = (evt) => {
         evt.preventDefault()
         if (!messageInput.trim()) {
             setError('Please enter a message')
             return
         }
         setError()
+        socket.emit("send_message", { messageInput, chatId })
         addMessage(messageInput, chatId)
         setMessageInput('')
     }
     
+    
     useEffect(() => {
-        fetchMessages()
-    }, [chatId])
+        socket.on("receive_message", (data) => {
+            setMessageRecieved(data.messageInput)
+            setMessageInput('')
+            fetchMessages()
+        })
+    }, [socket])
+
 
     const deleteChat = async () => {
         try {
@@ -77,10 +96,12 @@ export default function MessageListView() {
             {messages.map((message) => (
                 <MessageView key={message._id} message={message} />
             ))}
-        </div>
+           
+        </div> 
+             {/* {messageRecieved}  */}
         </ScrollArea>
         { error && <p>{error}</p>}
-        <form onSubmit={handleSend} className="flex p-2">
+        <form onSubmit={sendMessage} className="flex p-2">
             <Input value={messageInput} onChange={handleChange} type="text" placeholder="Write Message..."/>
             <Button className="ml-2" type="submit">Send</Button>
         </form>

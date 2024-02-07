@@ -36,7 +36,7 @@ export default function ChatView({ chat }) {
         </Avatar>
         <div className="min-w-0 flex-auto">
           <p className="text-sm font-semibold leading-6 text-gray-900">
-            {chat.otherParticipant.username}
+            {/* {chat.otherParticipant.username} */}
           </p>
           <p>{messagePreview}</p>
         </div>

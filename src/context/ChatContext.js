@@ -37,6 +37,7 @@ export const ChatProvider = ({children}) => {
         getChatPreviews()
     }
 
+
     const contextValue = {
         chats,
         setChats,
