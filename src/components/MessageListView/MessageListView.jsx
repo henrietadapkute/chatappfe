@@ -20,8 +20,10 @@ export default function MessageListView() {
     const { chatId } = useParams()
     const currentChat = chats.find((chat) => chat.chatId === chatId)
     const [messageInput, setMessageInput] = useState('')
+
     const fetchMessages = () => {
         getMessages(chatId)
+        console.log(chatId)
     }
     const handleChange = (evt) => {
         setMessageInput(evt.target.value)
@@ -33,7 +35,7 @@ export default function MessageListView() {
     }
     
     useEffect(() => {
-        fetchMessages()
+        fetchMessages({chatId})
     }, [chatId])
 
     const deleteChat = async () => {
