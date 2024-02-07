@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import sendRequest from '@/utilities/send-request'
+import { useChat } from '@/context/ChatContext'
 
 const formSchema = z.object({
   participants: z.string().min(2, {
@@ -23,6 +24,7 @@ const formSchema = z.object({
 })
 
 export default function CreateChatForm({}) {
+  const { addChat } = useChat()
     const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,39 +33,35 @@ export default function CreateChatForm({}) {
   });
 
     const onSubmit = async () => {
-    try {
-        const username = form.getValues("participants");
-        const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/search/user?username=${username}`)
-        const user = response
+        const usernames = form.getValues("participants").split(', ');
+        try {
+        const usersPromise = usernames.map(async (username) => await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/search/user?username=${username}`))
+        const users = await Promise.all(usersPromise)
+        // const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/search/user?username=${username}`)
+        // const user = response
 
-        console.log('User found', user)
-        if (user) {
-            const chatResponse = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/create/chat`, 'POST', {
-                participants: user._id
-            })
-
-            const chatData = chatResponse
-            console.log('Chat created', chatData)
-            form.reset()
-        } else {
-            console.log('User not found');
+        // console.log('User found', user)
+         if (users.every(user => user)) {
+          const userIds = users.map(user => user._id);
+          addChat({participants: userIds})
+          form.reset()
         }
-    } catch (error) {
-        console.error(error);
+      } catch {
+
+      }
     }
-}
 
   return (
     <Form {...form}>
-    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+    <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField 
         control={form.control}
         name="participants"
         render={({ field }) => (
-            <FormItem>
+            <FormItem className="p-2">
             <FormLabel>Search for a user</FormLabel>
             <FormControl>
-            <Input placeholder="username"
+            <Input className="w-4/5" placeholder="username"
             {...field}
             />
             </FormControl>
@@ -74,7 +72,7 @@ export default function CreateChatForm({}) {
             </FormItem>
         )}
         />
-        <Button type="submit">Create Chat</Button>
+        <Button className="my-4" type="submit">Create Chat</Button>
     </form>
     </Form>
   )

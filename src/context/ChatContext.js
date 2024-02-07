@@ -9,7 +9,7 @@ export const useChat = () => useContext(ChatContext)
 export const ChatProvider = ({children}) => {
     const [chats, setChats] = useState([])
     const [messages, setMessages] = useState([])
-    const [user, setUser] = useState({})
+    const [user, setUser] = useState()
     
     const getChatPreviews = async () => {
         const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/previews`)
@@ -22,9 +22,7 @@ export const ChatProvider = ({children}) => {
     }
 
     const addChat = async (chat) => {
-        await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/create/chat`, 'POST', {
-            participants: user._id
-        })
+        await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/create/chat`, 'POST', chat)
         getChatPreviews()
     }
 

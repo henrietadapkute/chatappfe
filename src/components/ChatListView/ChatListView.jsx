@@ -20,7 +20,7 @@ import { useChat } from "@/context/ChatContext";
 // List of conversations available
 export default function ChatListView({ isChatDeleted, handleChatDelete}) {
 
-  const { chats, setChats, getChatPreviews, messages } = useChat()
+  const { user, chats, setChats, getChatPreviews, messages } = useChat()
   const [showCreateChatForm, setShowCreateChatForm] = useState(false)
   const [showProfileSheet, setShowProfileSheet] = useState(false)
 
@@ -61,9 +61,11 @@ export default function ChatListView({ isChatDeleted, handleChatDelete}) {
         <div className="flex flex-col gap-2 pt-1">
           
           {showCreateChatForm && <CreateChatForm />}
+
           {showProfileSheet && <SheetSide />}
-          {chats.map((chat) => (
-            <ChatView key={chat.chatId} chat={chat} />
+          {chats.map((chat) => ( chat.chatType === "private" 
+          ? <ChatView key={chat.chatId} chat={chat} />
+          : <p>"Group"</p>
           ))}
         </div>
       </ScrollArea>
