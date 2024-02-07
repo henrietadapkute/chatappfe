@@ -23,10 +23,12 @@ export default function MessageListView() {
     const currentChat = chats.find((chat) => chat.chatId === chatId)
     setCurrentChatId(chatId)
     const [messageInput, setMessageInput] = useState('')
+
     const [error, setError] = useState()
     const [messageRecieved, setMessageRecieved] = useState('')
     const fetchMessages = () => {
         getMessages(chatId)
+        console.log(chatId)
     }
     const handleChange = (evt) => {
         setMessageInput(evt.target.value)
@@ -64,6 +66,9 @@ export default function MessageListView() {
     
     
     useEffect(() => {
+        fetchMessages({chatId})
+    }, [chatId])
+
         socket.on("receive_message", (data) => {
             setMessageRecieved(data.messageInput)
             setMessageInput('')
