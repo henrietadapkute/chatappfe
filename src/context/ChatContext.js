@@ -10,6 +10,7 @@ export const ChatProvider = ({children}) => {
     const [chats, setChats] = useState([])
     const [messages, setMessages] = useState([])
     const [user, setUser] = useState()
+    const [currentChatId, setCurrentChatId] = useState()
     
     const getChatPreviews = async () => {
         const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/previews`)
@@ -22,17 +23,17 @@ export const ChatProvider = ({children}) => {
     }
 
     const addChat = async (chat) => {
-        await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/create/chat`, 'POST', chat)
+        const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/create/chat`, 'POST', chat)
         getChatPreviews()
+        return response
     }
 
     const addMessage = async (message, chatId) => {
-        console.log('called')
         const newMessage = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/${chatId}/messages`, 'POST', {
             content: message
         })
         setMessages([...messages, newMessage])
-        getMessages()
+        getMessages(chatId)
         getChatPreviews()
     }
 
@@ -43,6 +44,8 @@ export const ChatProvider = ({children}) => {
         setMessages,
         user,
         setUser,
+        currentChatId,
+        setCurrentChatId,
         getChatPreviews,
         getMessages,
         addChat,

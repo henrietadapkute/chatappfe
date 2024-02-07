@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {zodResolver} from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -23,7 +24,8 @@ const formSchema = z.object({
   }),
 })
 
-export default function CreateChatForm({}) {
+export default function CreateChatForm({onSuccessfulSubmit}) {
+  const navigate = useNavigate()
   const { addChat } = useChat()
     const form = useForm({
     resolver: zodResolver(formSchema),
@@ -43,8 +45,10 @@ export default function CreateChatForm({}) {
         // console.log('User found', user)
          if (users.every(user => user)) {
           const userIds = users.map(user => user._id);
-          addChat({participants: userIds})
+          const response = await addChat({participants: userIds})
           form.reset()
+          onSuccessfulSubmit()
+          navigate(`chats/${response._id}`)
         }
       } catch {
 
@@ -52,8 +56,8 @@ export default function CreateChatForm({}) {
     }
 
   return (
-    <Form {...form}>
-    <form onSubmit={form.handleSubmit(onSubmit)}>
+    <Form className="self-start w-full" {...form}>
+    <form className="self-start w-full" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField 
         control={form.control}
         name="participants"

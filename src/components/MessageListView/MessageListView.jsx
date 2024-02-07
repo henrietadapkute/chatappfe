@@ -17,9 +17,10 @@ import sendRequest from "@/utilities/send-request"
 
 export default function MessageListView() {
     const navigate = useNavigate()
-    const { messages, addMessage, getMessages, setMessages, chats } = useChat()
+    const { messages, addMessage, getMessages, setMessages, chats, setCurrentChatId } = useChat()
     const { chatId } = useParams()
     const currentChat = chats.find((chat) => chat.chatId === chatId)
+    setCurrentChatId(chatId)
     const [messageInput, setMessageInput] = useState('')
     const [error, setError] = useState()
 
@@ -81,7 +82,7 @@ export default function MessageListView() {
         { error && <p>{error}</p>}
         <form onSubmit={handleSend} className="flex p-2">
             <Input value={messageInput} onChange={handleChange} type="text" placeholder="Write Message..."/>
-            <Button type="submit">Send</Button>
+            <Button className="ml-2" type="submit">Send</Button>
         </form>
     </div>
   )
