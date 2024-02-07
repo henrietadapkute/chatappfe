@@ -15,21 +15,22 @@ import { Link } from 'react-router-dom'
 import { useChat } from "@/context/ChatContext";
 
 export default function ChatView({ chat }) {
-  const { user } = useChat()
+  const { user, currentChatId } = useChat()
   const maxPreviewLength = 30
   const lastMessage = chat.latestMessage ? chat.latestMessage.content : ''
   const messagePreview = lastMessage.length > maxPreviewLength 
   ? lastMessage.slice(0, maxPreviewLength) + '...'
   : lastMessage
-  console.log(chat.latestMessage)
   let readLatest = true
   if (chat.latestMessage) readLatest = chat.latestMessage.senderId === user._id || chat.latestMessage?.readBy.includes(user._id)
 
+  let chatViewStyle = "box-border border-2 border-transparent cursor-pointer h-full w-full flex min-w-0 gap-x-4"
+  if(currentChatId === chat.chatId) chatViewStyle += " border-r-sky-500"
+
   return (
-    <Link to={`/chats/${chat.chatId}`}>
-    <div>
-      <div className="cursor-pointer flex min-w-0 gap-x-4">
-        <Avatar className="flex-none">
+    <Link className="h-full w-full" to={`/chats/${chat.chatId}`}>
+      <div className={chatViewStyle}>
+        <Avatar>
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
@@ -42,7 +43,6 @@ export default function ChatView({ chat }) {
           {!readLatest && <Badge className="h-4 w-4" variant="destructive"></Badge>}
       </div>
       <Separator className="my-2" />
-    </div>
     </Link>
   );
 }

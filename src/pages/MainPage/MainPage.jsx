@@ -26,7 +26,7 @@ export default function MainPage() {
         direction="horizontal"
         className="flex-grow rounded-lg border"
       >
-        <ResizablePanel defaultSize={25}>
+        <ResizablePanel minSize={5} defaultSize={25}>
           <ChatListView isChatDeleted={isChatDeleted} handleChatDelete={handleChatDelete}/>
         </ResizablePanel>
         <ResizableHandle />
