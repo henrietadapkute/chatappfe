@@ -59,12 +59,11 @@ export default function ChatListView({ isChatDeleted, handleChatDelete}) {
       <ScrollArea className="h-full w-full">
         <div className="flex flex-col gap-2 pt-1">
           
-
           {showProfileSheet && <SheetSide />}
-          {chats.map((chat) => ( chat.chatType === "private" 
-          ? <ChatView key={chat.chatId} chat={chat} />
-          : <p>"Group"</p>
-          ))}
+          {chats.map((chat) => (
+          <ChatView key={chat.chatId} chat={chat} />
+          )
+          )}
         </div>
       </ScrollArea>
     </div>

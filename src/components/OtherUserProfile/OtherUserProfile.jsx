@@ -15,6 +15,7 @@ import { useChat } from "@/context/ChatContext"
 import { useState, useEffect } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useParams } from "react-router-dom"
+import sendRequest from "@/utilities/send-request"
 
 export default function DialogDemo() {
   const { chatId } = useParams()
@@ -23,16 +24,20 @@ export default function DialogDemo() {
   const { messages, addMessage, getMessages, setMessages, chats, setCurrentChatId } = useChat()
   const [username, setUsername] = useState("")
   const currentChat = chats.find((chat) => chat.chatId === chatId)
+  console.log(currentChat)
     setCurrentChatId(chatId)
 
     const handleAvatarClick = () => {
         setIsDialogOpen(true)
     }
 
+    const fetchLastMessageSent = () => {
+      sendRequest(`${process.env.REACT_APP_BACKEND_URL}/user`)
+    }
+
     useEffect(() => {
     if (user) {
       setUsername(user.username)
-      console.log(user)
     }
   }, [user])
 
@@ -41,8 +46,8 @@ export default function DialogDemo() {
       <DialogTrigger asChild>
         <button onClick={handleAvatarClick} className="flex-none">
             <Avatar className="flex-none">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={currentChat?.otherParticipant?.profileImage} />
+            <AvatarFallback>{currentChat?.otherParticipant?.username[0]}</AvatarFallback>
             </Avatar>
         </button>
 
@@ -50,14 +55,14 @@ export default function DialogDemo() {
       <DialogContent className="sm:max-w-[300px]">
         <DialogHeader className="text-3xl">
           <Avatar className="flex-none">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage src={currentChat?.otherParticipant?.profileImage} />
+            <AvatarFallback>{currentChat?.otherParticipant?.username[0]}</AvatarFallback>
             </Avatar>
             <br></br>
             {currentChat?.otherParticipant?.username}
           <DialogDescription>
               About
-            <br/> "Per aspera sic itur ad astra"
+            <br/> {currentChat?.otherParticipant?.bio}
           </DialogDescription>
         </DialogHeader>
       

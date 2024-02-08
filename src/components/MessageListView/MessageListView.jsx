@@ -133,7 +133,7 @@ export default function MessageListView() {
             <ScrollArea className="flex-grow w-full">
             <div className="flex flex-col gap-2 pt-1">
                 {messages.map((message, idx) => (
-                    <MessageView key={message._id} message={message} isLatest={idx === messages.length - 1} />
+                    <MessageView key={message._id} message={message} isLastofChain={false} isLatest={idx === messages.length - 1} />
                 ))}
             </div>
             </ScrollArea>

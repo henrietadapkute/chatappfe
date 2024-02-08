@@ -14,7 +14,7 @@ function App() {
     setUser(getUser())
   }, [])
 
-  return <>{!user ? <AuthPage /> : <MainPage />}</>;
+  return <div className="dark">{!user ? <AuthPage /> : <MainPage />}</div>;
 }
 
 export default App;
