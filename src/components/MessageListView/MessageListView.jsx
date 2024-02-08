@@ -1,6 +1,6 @@
 // Displays list of MessageViews()
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -45,6 +45,10 @@ export default function MessageListView() {
    
     const handleCloseDialog = () => {
         setIsDialogOpen(false)
+    }
+
+    const handleOpenProfile = () => {
+        setIsDialogOpen(!isDialogOpen)
     }
 
     const fetchMessages = () => {
@@ -118,7 +122,6 @@ export default function MessageListView() {
             <DialogDemo />
             {isDialogOpen && <DialogDemo onClose={handleCloseDialog}/>}
         </div>
-         
             <AlertOnDelete onDelete={deleteChatConfirm} />
 {isAlertOpen && (
   <AlertOnDelete
@@ -127,14 +130,13 @@ export default function MessageListView() {
   />
 )}
     </div>
-        <ScrollArea className="flex-grow w-full">
-        <div className="flex flex-col gap-2 pt-1">
-            {messages.map((message) => (
-                <MessageView key={message._id} message={message} />
-            ))}
-           {messageRecieved} 
-        </div> 
-        </ScrollArea>
+            <ScrollArea className="flex-grow w-full">
+            <div className="flex flex-col gap-2 pt-1">
+                {messages.map((message, idx) => (
+                    <MessageView key={message._id} message={message} isLatest={idx === messages.length - 1} />
+                ))}
+            </div>
+            </ScrollArea>
         { error && <p>{error}</p>}
         <form onSubmit={sendMessage} className="flex p-2">
             <Input value={messageInput} onChange={handleChange} type="text" placeholder="Write Message..."/>
