@@ -8,13 +8,13 @@ import MainPage from "../MainPage/MainPage";
 import { useChat } from "@/context/ChatContext";
 
 function App() {
-  const { user, setUser } = useChat()
+  const { user, setUser } = useChat();
 
   useEffect(() => {
-    setUser(getUser())
-  }, [])
+    setUser(getUser());
+  }, []);
 
-  return <div className="dark">{!user ? <AuthPage /> : <MainPage />}</div>;
+  return <div>{!user ? <AuthPage /> : <MainPage />}</div>;
 }
 
 export default App;
