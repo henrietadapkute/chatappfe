@@ -25,6 +25,7 @@ const formSchema = z.object({
 })
 
 export default function CreateChatForm({onSuccessfulSubmit}) {
+  const [error, setError] = useState()
   const navigate = useNavigate()
   const { addChat } = useChat()
     const form = useForm({
@@ -44,13 +45,17 @@ export default function CreateChatForm({onSuccessfulSubmit}) {
 
         // console.log('User found', user)
          if (users.every(user => user)) {
+          setError()
           const userIds = users.map(user => user._id);
           const response = await addChat({participants: userIds})
           form.reset()
           onSuccessfulSubmit()
           navigate(`chats/${response._id}`)
+        } else {
+          setError('User not found')
         }
       } catch {
+        setError('User not found')
 
       }
     }
@@ -72,7 +77,7 @@ export default function CreateChatForm({onSuccessfulSubmit}) {
             <FormDescription>
                 Enter a username
             </FormDescription>
-            <FormMessage>Add this later</FormMessage>
+            <FormMessage>{error && <>{error}</>}</FormMessage>
             </FormItem>
         )}
         />
