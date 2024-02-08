@@ -87,7 +87,6 @@ export default function MessageListView() {
 
         socket.on("receive_message", (data) => {
             setMessageRecieved(data.messageInput)
-            setMessageInput('')
             fetchMessages()
         })
 }, [socket])
