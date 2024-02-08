@@ -11,7 +11,6 @@ import DialogDemo from "@/components/OtherUserProfile/OtherUserProfile"
 import AlertOnDelete from "@/components/AlertOnDelete/AlertOnDelete"
 import { useChat } from '@/context/ChatContext'
 import sendRequest from "@/utilities/send-request"
-<<<<<<< HEAD
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,8 +25,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-=======
->>>>>>> 66761c5 (removed drop down menu and added alert before deleting chat)
 
 // SOCKET
 import io from "socket.io-client"
