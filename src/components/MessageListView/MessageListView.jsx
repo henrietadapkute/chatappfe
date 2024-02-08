@@ -63,7 +63,6 @@ export default function MessageListView() {
     useEffect(() => {
         socket.on("receive_message", (data) => {
             setMessageRecieved(data.messageInput)
-            setMessageInput('')
             fetchMessages()
         })
     }, [socket])
@@ -102,7 +101,6 @@ export default function MessageListView() {
             ))}
            
         </div> 
-             {/* {messageRecieved}  */}
         </ScrollArea>
         { error && <p>{error}</p>}
         <form onSubmit={sendMessage} className="flex p-2">

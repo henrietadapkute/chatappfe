@@ -11,6 +11,7 @@ import { useState } from "react";
 import MessageListView from "@/components/MessageListView/MessageListView";
 import MessageView from "@/components/MessageView/MessageView";
 import {Routes, Route} from 'react-router-dom';
+import NoActiveChatView from "@/components/NoActiveChatView/NoActiveChatView";
 
 export default function MainPage() {
   const [isChatDeleted, setIsChatDeleted] = useState(false)
@@ -33,6 +34,7 @@ export default function MainPage() {
         <ResizablePanel defaultSize={75}>
           <Routes>
             <Route path="/chats/:chatId" element={<MessageListView />} />
+            <Route path="/" element={<NoActiveChatView />} />
           </Routes>
         </ResizablePanel>
       </ResizablePanelGroup>
