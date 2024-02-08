@@ -31,8 +31,8 @@ export default function ChatView({ chat }) {
     <Link className="h-full w-full" to={`/chats/${chat.chatId}`}>
       <div className={chatViewStyle}>
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage src={chat?.otherParticipant?.profileImage}/>
+          <AvatarFallback>{chat?.otherParticipant?.username[0]}</AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-auto">
           <p className="text-sm font-semibold leading-6 text-gray-900">
