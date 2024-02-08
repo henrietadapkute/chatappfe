@@ -2,7 +2,6 @@ import { Container } from "react-bootstrap";
 import AuthPage from "../AuthPage/AuthPage";
 import { getUser } from "../../utilities/users-service";
 import { useEffect } from "react";
-import { Button } from "../../components/ui/button";
 import MainPage from "../MainPage/MainPage";
 
 import { useChat } from "@/context/ChatContext";
@@ -14,7 +13,8 @@ function App() {
     setUser(getUser())
   }, [])
 
-  return <>{!user ? <AuthPage /> : <MainPage />}</>;
+  return <div>
+  {!user ? <AuthPage /> : <MainPage/>}</div>;
 }
 
 export default App;
