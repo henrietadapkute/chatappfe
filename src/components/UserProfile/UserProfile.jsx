@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react"
+import { logOut } from "@/utilities/users-service"
+import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -18,9 +20,10 @@ import { User } from "lucide-react"
 const SHEET_SIDES = ["left"]
 
 export default function SheetSide() {
-  const { user } = useChat()
+  const { user, setUser } = useChat()
   const [id, setId] = useState("")
   const selectedSide = "left"
+  const navigate = useNavigate()
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -29,24 +32,31 @@ export default function SheetSide() {
     if (user) {
       setId(user._id)
       setUsername(user.username)
-      setEmail(user.email);
+      setEmail(user.email)
       setPassword(user.password)
     }
-  }, [user]);
+  }, [user])
 
   const handleUsernameChange = (e) => {
     console.log(e.target.value)
     setUsername(e.target.value)
     console.log(username)
-  };
+  }
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value)
-  };
+  }
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value)
-  };
+  }
+
+  const handleLogout = (e) => {
+    logOut() 
+    setUser()
+    navigate('/login')
+  }
+
 
   const updateUserProfile = async (updatedUserDetails) => {
     try {
@@ -97,8 +107,11 @@ export default function SheetSide() {
             </Button>
           </SheetTrigger>
           <SheetContent side={side}>
-            <SheetHeader>
+            <SheetHeader><div className="col-span-1">
+            <Button type="submit" onClick={handleLogout}>Log Out</Button>
+            </div>
               <SheetTitle>Edit profile</SheetTitle>
+              
               <SheetDescription>
                 Make changes to your profile here. Click save when you're done.
               </SheetDescription>
@@ -144,8 +157,11 @@ export default function SheetSide() {
                 <Button type="submit" onClick={handleSaveChanges}>
                   Save changes
                 </Button>
+                 
               </SheetClose>
             </SheetFooter>
+            <br/>
+            
           </SheetContent>
         </Sheet>
       ))}
