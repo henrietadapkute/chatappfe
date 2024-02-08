@@ -9,6 +9,7 @@ import { Trash2, User } from 'lucide-react';
 import MessageView from "@/components/MessageView/MessageView"
 import DialogDemo from "@/components/OtherUserProfile/OtherUserProfile"
 import AlertOnDelete from "@/components/AlertOnDelete/AlertOnDelete"
+import EmojiView from "../EmojiView/EmojiView";
 import { useChat } from '@/context/ChatContext'
 import sendRequest from "@/utilities/send-request"
 import {
@@ -36,7 +37,6 @@ export default function MessageListView() {
     const { messages, addMessage, getMessages, setMessages, chats, setCurrentChatId } = useChat()
     const currentChat = chats.find((chat) => chat.chatId === chatId)
     setCurrentChatId(chatId)
-
     const [messageInput, setMessageInput] = useState('') 
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [error, setError] = useState()
@@ -45,6 +45,10 @@ export default function MessageListView() {
    
     const handleCloseDialog = () => {
         setIsDialogOpen(false)
+    }
+
+    const handleEmojiSelect = (emoji) => {
+        setMessageInput(messageInput + emoji)
     }
 
     const fetchMessages = () => {
@@ -137,9 +141,10 @@ export default function MessageListView() {
         </ScrollArea>
         { error && <p>{error}</p>}
         <form onSubmit={sendMessage} className="flex p-2">
+            <EmojiView onEmojiSelect={handleEmojiSelect} />
             <Input value={messageInput} onChange={handleChange} type="text" placeholder="Write Message..."/>
             <Button className="ml-2" type="submit">Send</Button>
-          
+           
         </form>
     </div>
   )
