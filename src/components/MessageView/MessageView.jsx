@@ -1,8 +1,9 @@
 // display a single message
 import { useChat } from "@/context/ChatContext"
+import { useEffect, useRef } from "react"
 
 
-export default function MessageView({message}) {
+export default function MessageView({message, isLatest}) {
 
   const { user } = useChat()
 
@@ -13,9 +14,19 @@ export default function MessageView({message}) {
   ? senderStyle
   : receiverStyle
 
+  const messageRef = useRef(null);
+
+  useEffect(() => {
+    if (isLatest && messageRef.current) {
+      messageRef.current.scrollIntoView();
+    }
+  }, [isLatest]);
+
+  console.log(isLatest)
+
   return (
     <>
-    <div className={messageStyle}>
+    <div ref={messageRef} className={messageStyle}>
       {message.content}
     </div>
     </>

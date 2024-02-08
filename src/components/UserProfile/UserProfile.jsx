@@ -108,7 +108,6 @@ export default function SheetSide() {
           </SheetTrigger>
           <SheetContent side={side}>
             <SheetHeader><div className="col-span-1">
-            <Button type="submit" onClick={handleLogout}>Log Out</Button>
             </div>
               <SheetTitle>Edit profile</SheetTitle>
               
@@ -116,6 +115,7 @@ export default function SheetSide() {
                 Make changes to your profile here. Click save when you're done.
               </SheetDescription>
             </SheetHeader>
+            <div className="flex flex-col justify-between h-4/5">
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="name" className="text-right">
@@ -151,15 +151,16 @@ export default function SheetSide() {
                   onChange={handlePasswordChange} 
                 />
               </div>
-            </div>
-            <SheetFooter>
               <SheetClose asChild>
                 <Button type="submit" onClick={handleSaveChanges}>
                   Save changes
                 </Button>
-                 
               </SheetClose>
+            </div>
+            <SheetFooter>
+            <Button type="submit" variant="destructive" onClick={handleLogout}>Log Out</Button>
             </SheetFooter>
+            </div>
             <br/>
             
           </SheetContent>
