@@ -111,7 +111,6 @@ export default function SheetSide() {
             <Button type="submit" onClick={handleLogout}>Log Out</Button>
             </div>
               <SheetTitle>Edit profile</SheetTitle>
-              
               <SheetDescription>
                 Make changes to your profile here. Click save when you're done.
               </SheetDescription>
