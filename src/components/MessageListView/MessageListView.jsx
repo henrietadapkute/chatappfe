@@ -10,7 +10,7 @@ import MessageView from "@/components/MessageView/MessageView"
 import DialogDemo from "@/components/OtherUserProfile/OtherUserProfile"
 import { useChat } from '@/context/ChatContext'
 import sendRequest from "@/utilities/send-request"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +25,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
 // SOCKET
 import io from "socket.io-client"
 const socket = io.connect("http://localhost:4000")
@@ -35,6 +36,7 @@ export default function MessageListView() {
     const { messages, addMessage, getMessages, setMessages, chats, setCurrentChatId } = useChat()
     const currentChat = chats.find((chat) => chat.chatId === chatId)
     setCurrentChatId(chatId)
+
     const [messageInput, setMessageInput] = useState('') 
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [error, setError] = useState()
@@ -46,8 +48,8 @@ export default function MessageListView() {
 
     const fetchMessages = () => {
         getMessages(chatId)
-        
     }
+    
     const handleChange = (evt) => {
         setMessageInput(evt.target.value)
     }
@@ -78,8 +80,11 @@ export default function MessageListView() {
         addMessage(messageInput, chatId)
         setMessageInput('')
     }
+
+    // Use Effect to receive Message
     
- useEffect(() => {
+    useEffect(() => {
+
         socket.on("receive_message", (data) => {
             setMessageRecieved(data.messageInput)
             setMessageInput('')
