@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+
 import {
   Sheet,
   SheetClose,
@@ -21,34 +23,26 @@ const SHEET_SIDES = ["left"]
 
 export default function SheetSide() {
   const { user, setUser } = useChat()
-  const [id, setId] = useState("")
   const selectedSide = "left"
   const navigate = useNavigate()
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    bio: '',
+    profileImage: ''
+  })
 
   useEffect(() => {
     if (user) {
-      setId(user._id)
-      setUsername(user.username)
-      setEmail(user.email)
-      setPassword(user.password)
+      setFormData({...formData, ...user})
     }
   }, [user])
 
-  const handleUsernameChange = (e) => {
-    console.log(e.target.value)
-    setUsername(e.target.value)
-    console.log(username)
-  }
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value)
-  }
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value)
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value
+    })
   }
 
   const handleLogout = (e) => {
@@ -61,7 +55,7 @@ export default function SheetSide() {
   const updateUserProfile = async (updatedUserDetails) => {
     try {
       console.log(user)
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${user._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -84,13 +78,8 @@ export default function SheetSide() {
       if (!user) {
         throw new Error("User data not available")
       }
-      const updatedUserDetails = {
-        username,
-        email,
-        password,
-      };
 
-      const updatedUser = await updateUserProfile(updatedUserDetails)
+      const updatedUser = await updateUserProfile(formData)
       console.log("User profile updated:", updatedUser)
     } catch (error) {
       console.error("Error updating user profile:", error)
@@ -117,37 +106,47 @@ export default function SheetSide() {
             <div className="flex flex-col justify-between h-4/5">
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
+                <Label htmlFor="username" className="text-right">
                   Username
                 </Label>
                 <Input
-                  id="name"
-                  value={username}
-                  className="col-span-3"
-                  onChange={handleUsernameChange}
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="username" className="text-right">
-                  Email
-                </Label>
-                <Input
                   id="username"
-                  value={email}
+                  value={formData.username}
                   className="col-span-3"
-                  onChange={handleEmailChange}
+                  onChange={handleChange}
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="email" className="text-right">
-                  Password
+                  Email
                 </Label>
                 <Input
-                  id="password"
-                  type="password" 
-                  value={password}
+                  id="email"
+                  value={formData.email}
                   className="col-span-3"
-                  onChange={handlePasswordChange} 
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="bio" className="text-right">
+                Bio
+                </Label>
+                <Textarea
+                  id="bio"
+                  value={formData.bio}
+                  className="col-span-3"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="profileImage" className="text-right">
+                Image
+                </Label>
+                <Input
+                  id="profileImage"
+                  value={formData.profileImage}
+                  className="col-span-3"
+                  onChange={handleChange}
                 />
               </div>
               <SheetClose asChild>
