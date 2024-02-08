@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import ModeToggle from "../DarkModeTheme/DarkMode"
 import { Textarea } from "@/components/ui/textarea"
 
 import {
@@ -97,8 +98,10 @@ export default function SheetSide() {
           </SheetTrigger>
           <SheetContent side={side}>
             <SheetHeader><div className="col-span-1">
+            <Button type="submit" onClick={handleLogout}>Log Out</Button>
             </div>
-              <SheetTitle>Edit profile</SheetTitle>
+              <ModeToggle/>
+              <SheetTitle>Edit profile</SheetTitle> 
               <SheetDescription>
                 Make changes to your profile here. Click save when you're done.
               </SheetDescription>
@@ -154,13 +157,13 @@ export default function SheetSide() {
                   Save changes
                 </Button>
               </SheetClose>
+
             </div>
             <SheetFooter>
             <Button type="submit" variant="destructive" onClick={handleLogout}>Log Out</Button>
             </SheetFooter>
             </div>
             <br/>
-            
           </SheetContent>
         </Sheet>
       ))}

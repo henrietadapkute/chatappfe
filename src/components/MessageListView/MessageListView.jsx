@@ -119,11 +119,14 @@ export default function MessageListView() {
     <div className="flex flex-col h-full">
       <div className="w-full flex justify-between items-center p-2 my-2 border-b border-b-2">
         <div className="flex items-center justify-center flex-grow">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 mr-2">
-            {currentChat?.otherParticipant?.username}
-          </h2>
-          <DialogDemo />
-          {isDialogOpen && <DialogDemo onClose={handleCloseDialog} />}
+
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 mr-2">
+                <div className="bg-white dark:bg-black text-black dark:text-white">
+            {currentChat?.otherParticipant?.username}</div>
+            </h2>
+            <DialogDemo />
+            {isDialogOpen && <DialogDemo onClose={handleCloseDialog}/>}
+
         </div>
         <AlertOnDelete onDelete={deleteChatConfirm} />
         {isAlertOpen && (

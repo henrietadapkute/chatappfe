@@ -44,7 +44,8 @@ export default function ChatListView({ isChatDeleted, handleChatDelete}) {
     <div className="flex flex-col w-full h-full items-center justify-center p-2">
       <div className="flex w-full my-3 self-start justify-between">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-          Messages
+          <div className="bg-white dark:bg-black text-black dark:text-white">
+          Messages</div>
         </h2>
         <div className="self-end flex">
           <Button className="mx-2" onClick={toggleCreateChatForm}>
