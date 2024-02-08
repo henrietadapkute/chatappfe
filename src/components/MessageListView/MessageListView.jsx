@@ -8,9 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Trash2, User } from 'lucide-react';
 import MessageView from "@/components/MessageView/MessageView"
 import DialogDemo from "@/components/OtherUserProfile/OtherUserProfile"
+import AlertOnDelete from "@/components/AlertOnDelete/AlertOnDelete"
 import { useChat } from '@/context/ChatContext'
 import sendRequest from "@/utilities/send-request"
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,6 +41,7 @@ export default function MessageListView() {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [error, setError] = useState()
     const [messageRecieved, setMessageRecieved] = useState('')
+    const [isAlertOpen, setIsAlertOpen] = useState(false)
    
     const handleCloseDialog = () => {
         setIsDialogOpen(false)
@@ -95,14 +96,20 @@ export default function MessageListView() {
         })
 }, [socket])
   
-    const deleteChat = async () => {
-        try {
+ const deleteChat = async () => {
+    setIsAlertOpen(true)
+  }
+
+ const deleteChatConfirm = async () => {
+        try {  
         await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/${chatId}`, 'DELETE')
         setMessages([])
         navigate('/chats')
         } catch (error) {
             console.error("Error deleting chat:", error)
-        }
+        } finally {
+      setIsAlertOpen(false)
+    }
     }
     
   return (
@@ -115,28 +122,13 @@ export default function MessageListView() {
             <DialogDemo />
             {isDialogOpen && <DialogDemo onClose={handleCloseDialog}/>}
         </div>
-          <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">:</Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Profile <DialogDemo />
-            <DropdownMenuShortcut><User/></DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem variant="destructive" onClick={deleteChat}>
-            Delete
-            <DropdownMenuShortcut><Trash2 /></DropdownMenuShortcut>
-          </DropdownMenuItem>
-        
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-        <Button variant="destructive" onClick={deleteChat}>
-            <Trash2 />
-        </Button>
+            <AlertOnDelete onDelete={deleteChatConfirm} />
+{isAlertOpen && (
+  <AlertOnDelete
+    onDelete={() => setIsAlertOpen(false)}
+    onClick={deleteChatConfirm}
+  />
+)}
     </div>
             <ScrollArea className="flex-grow w-full">
             <div className="flex flex-col gap-2 pt-1">
@@ -149,6 +141,7 @@ export default function MessageListView() {
         <form onSubmit={sendMessage} className="flex p-2">
             <Input value={messageInput} onChange={handleChange} type="text" placeholder="Write Message..."/>
             <Button className="ml-2" type="submit">Send</Button>
+          
         </form>
     </div>
   )

@@ -110,7 +110,6 @@ export default function SheetSide() {
             <SheetHeader><div className="col-span-1">
             </div>
               <SheetTitle>Edit profile</SheetTitle>
-              
               <SheetDescription>
                 Make changes to your profile here. Click save when you're done.
               </SheetDescription>
