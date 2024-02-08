@@ -5,15 +5,30 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Input } from "@/components/ui/input";
-import { Trash2 } from 'lucide-react';
+import { Trash2, User } from 'lucide-react';
 import MessageView from "@/components/MessageView/MessageView"
+import DialogDemo from "@/components/OtherUserProfile/OtherUserProfile"
 import { useChat } from '@/context/ChatContext'
 import sendRequest from "@/utilities/send-request"
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 // SOCKET
 import io from "socket.io-client"
 const socket = io.connect("http://localhost:4000")
-
-
 
 export default function MessageListView() {
     const { chatId } = useParams()
@@ -21,13 +36,20 @@ export default function MessageListView() {
     const { messages, addMessage, getMessages, setMessages, chats, setCurrentChatId } = useChat()
     const currentChat = chats.find((chat) => chat.chatId === chatId)
     setCurrentChatId(chatId)
-    const [messageInput, setMessageInput] = useState('')
+
+    const [messageInput, setMessageInput] = useState('') 
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [error, setError] = useState()
     const [messageRecieved, setMessageRecieved] = useState('')
+   
+    const handleCloseDialog = () => {
+        setIsDialogOpen(false)
+    }
 
     const fetchMessages = () => {
         getMessages(chatId)
     }
+    
     const handleChange = (evt) => {
         setMessageInput(evt.target.value)
     }
@@ -58,17 +80,18 @@ export default function MessageListView() {
         addMessage(messageInput, chatId)
         setMessageInput('')
     }
+
     // Use Effect to receive Message
     
     useEffect(() => {
+
         socket.on("receive_message", (data) => {
             setMessageRecieved(data.messageInput)
             setMessageInput('')
             fetchMessages()
         })
-    }, [socket])
-
-
+}, [socket])
+  
     const deleteChat = async () => {
         try {
         await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/chats/${chatId}`, 'DELETE')
@@ -86,11 +109,28 @@ export default function MessageListView() {
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 mr-2">
             {currentChat?.otherParticipant?.username}
             </h2>
-            <Avatar className="flex-none">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <DialogDemo />
+            {isDialogOpen && <DialogDemo onClose={handleCloseDialog}/>}
         </div>
+          <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">:</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={handleCloseDialog}>
+            Profile 
+            <DropdownMenuShortcut><User/></DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem variant="destructive" onClick={deleteChat}>
+            Delete
+            <DropdownMenuShortcut><Trash2 /></DropdownMenuShortcut>
+          </DropdownMenuItem>
+        
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
         <Button variant="destructive" onClick={deleteChat}>
             <Trash2 />
         </Button>
@@ -100,9 +140,8 @@ export default function MessageListView() {
             {messages.map((message) => (
                 <MessageView key={message._id} message={message} />
             ))}
-           
+           {messageRecieved} 
         </div> 
-             {/* {messageRecieved}  */}
         </ScrollArea>
         { error && <p>{error}</p>}
         <form onSubmit={sendMessage} className="flex p-2">
