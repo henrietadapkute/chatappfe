@@ -48,6 +48,7 @@ export default function MessageView({ message, lastRead, isLatest }) {
   useEffect(() => {
     fetchSender();
     fetchReader();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   useEffect(() => {
@@ -56,6 +57,7 @@ export default function MessageView({ message, lastRead, isLatest }) {
     } else if (isLatest && messageRef.current) {
       messageRef.current.scrollIntoView();
     }
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLatest]);
   
   

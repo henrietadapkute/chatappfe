@@ -36,7 +36,8 @@ export default function SheetSide() {
   useEffect(() => {
     if (user) {
       setFormData({...formData, ...user})
-    }
+    } 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
   const handleChange = (e) => {

@@ -10,6 +10,7 @@ export default function App() {
 
   useEffect(() => {
     setUser(getUser());
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -18,6 +19,7 @@ export default function App() {
     } else {
       document.documentElement.classList.remove('dark')
     }
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <div>{!user ? <AuthPage /> : <MainPage />}</div>;
