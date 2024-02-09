@@ -4,11 +4,12 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import MessageView from "@/components/MessageView/MessageView";
-import DialogDemo from "@/components/OtherUserProfile/OtherUserProfile";
-import AlertOnDelete from "@/components/AlertOnDelete/AlertOnDelete";
-import { useChat } from "@/context/ChatContext";
-import sendRequest from "@/utilities/send-request";
+import MessageView from "@/components/MessageView/MessageView"
+import DialogDemo from "@/components/OtherUserProfile/OtherUserProfile"
+import AlertOnDelete from "@/components/AlertOnDelete/AlertOnDelete"
+import EmojiView from "../EmojiView/EmojiView";
+import { useChat } from '@/context/ChatContext'
+import sendRequest from "@/utilities/send-request"
 
 // SOCKET
 import io from "socket.io-client";
@@ -36,6 +37,10 @@ export default function MessageListView() {
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
   };
+  
+  const handleEmojiSelect = (emoji) => {
+     setMessageInput(messageInput + emoji)
+    }
 
   const fetchMessages = () => {
     getMessages(chatId);
@@ -46,6 +51,10 @@ export default function MessageListView() {
     setMessageInput(evt.target.value);
   };
 
+  const handleOpenProfile = () => {
+    setIsDialogOpen(!isDialogOpen);
+  };
+  
   useEffect(() => {
     joinRoom(chatId);
     return () => {
@@ -127,6 +136,7 @@ const indexToUsersMap = Object.entries(lastReadByMessageIndex).reduce((acc, [use
             {isDialogOpen && <DialogDemo onClose={handleCloseDialog}/>}
 
         </div>
+
         <AlertOnDelete onDelete={deleteChatConfirm} />
         {isAlertOpen && (
           <AlertOnDelete
@@ -149,6 +159,7 @@ const indexToUsersMap = Object.entries(lastReadByMessageIndex).reduce((acc, [use
       </ScrollArea>
       {error && <p>{error}</p>}
       <form onSubmit={sendMessage} className="flex p-2">
+        <EmojiView onEmojiSelect={handleEmojiSelect} />
         <Input
           value={messageInput}
           onChange={handleChange}
