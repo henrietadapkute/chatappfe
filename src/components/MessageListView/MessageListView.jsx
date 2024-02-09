@@ -1,6 +1,6 @@
 // Displays list of MessageViews()
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState} from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
@@ -51,19 +51,17 @@ export default function MessageListView() {
     setMessageInput(evt.target.value);
   };
 
-  const handleOpenProfile = () => {
-    setIsDialogOpen(!isDialogOpen);
-  };
-  
   useEffect(() => {
     joinRoom(chatId);
     return () => {
       socket.off("receive_message");
     };
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     fetchMessages();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatId]);
 
   const joinRoom = (chatId) => {
@@ -86,6 +84,7 @@ export default function MessageListView() {
     socket.on("receive_message", () => {
       fetchMessages();
     });
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   const deleteChatConfirm = async () => {

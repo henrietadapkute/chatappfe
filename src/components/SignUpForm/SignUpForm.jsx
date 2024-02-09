@@ -45,7 +45,6 @@ export default function SignUpForm({ setUser }) {
   });
 
   const onSubmit = async (values) => {
-    const { confirm, ...userData } = values;
     try {
       const user = await signUp(values);
       setUser(user);
