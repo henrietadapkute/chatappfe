@@ -1,11 +1,9 @@
 // Displays list of MessageViews()
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import { Trash2, User } from "lucide-react";
 import MessageView from "@/components/MessageView/MessageView";
 import DialogDemo from "@/components/OtherUserProfile/OtherUserProfile";
 import AlertOnDelete from "@/components/AlertOnDelete/AlertOnDelete";
@@ -33,15 +31,10 @@ export default function MessageListView() {
   const [messageInput, setMessageInput] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [error, setError] = useState();
-  const [messageRecieved, setMessageRecieved] = useState("");
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
-  };
-
-  const handleOpenProfile = () => {
-    setIsDialogOpen(!isDialogOpen);
   };
 
   const fetchMessages = () => {
@@ -49,6 +42,7 @@ export default function MessageListView() {
   };
 
   const handleChange = (evt) => {
+    setError();
     setMessageInput(evt.target.value);
   };
 
@@ -79,18 +73,11 @@ export default function MessageListView() {
     setMessageInput("");
   };
 
-  // Use Effect to receive Message
-
   useEffect(() => {
-    socket.on("receive_message", (data) => {
-      setMessageRecieved(data.messageInput);
+    socket.on("receive_message", () => {
       fetchMessages();
     });
   }, [socket]);
-
-  const deleteChat = async () => {
-    setIsAlertOpen(true);
-  };
 
   const deleteChatConfirm = async () => {
     try {
@@ -113,7 +100,19 @@ export default function MessageListView() {
       !isLastMessage && messages[i].senderId !== messages[i + 1].senderId;
     messages[i].highlight = isLastMessage || senderChangesNext;
   }
-  console.log(messages);
+  const lastReadByMessageIndex = {};
+
+messages.forEach((message, index) => {
+  message.readBy.forEach(userId => {
+    lastReadByMessageIndex[userId] = index;
+  });
+});
+
+const indexToUsersMap = Object.entries(lastReadByMessageIndex).reduce((acc, [userId, index]) => {
+  if (!acc[index]) acc[index] = [];
+  acc[index].push(userId);
+  return acc;
+}, {});
 
   return (
     <div className="flex flex-col h-full">
@@ -142,7 +141,7 @@ export default function MessageListView() {
             <MessageView
               key={message._id}
               message={message}
-              isLastofChain={false}
+              lastRead={indexToUsersMap[idx]}
               isLatest={idx === messages.length - 1}
             />
           ))}
