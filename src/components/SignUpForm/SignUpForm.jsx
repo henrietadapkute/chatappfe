@@ -1,5 +1,3 @@
-import { useState, useRef } from "react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -10,14 +8,12 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -129,7 +125,7 @@ export default function SignUpForm({ setUser }) {
                 </FormItem>
               )}
             />
-            <Button className="w-max" type="submit">
+            <Button className="w-full" type="submit">
               Sign Up
             </Button>
           </form>

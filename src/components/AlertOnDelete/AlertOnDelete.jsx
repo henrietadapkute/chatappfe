@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Trash2} from 'lucide-react';
 import {
   AlertDialog,
@@ -13,12 +12,8 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 
-export default function AlertOnDelete({ deleteChatConfirm, onDelete }) {
-       const [isAlertOpen, setIsAlertOpen] = useState(false)
+export default function AlertOnDelete({ onDelete }) {
     
-    const handleCloseAlert = () => {
-        setIsAlertOpen(false)
-    }
   return (
     <AlertDialog>
       <AlertDialogTrigger><Trash2 /></AlertDialogTrigger>
@@ -30,7 +25,7 @@ export default function AlertOnDelete({ deleteChatConfirm, onDelete }) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel as={Button} onClick={handleCloseAlert} variant="outline">Cancel</AlertDialogCancel>
+          <AlertDialogCancel as={Button} variant="outline">Cancel</AlertDialogCancel>
           <AlertDialogAction as={Button} onClick={onDelete} variant="destructive">Delete</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
