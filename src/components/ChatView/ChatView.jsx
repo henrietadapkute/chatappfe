@@ -1,13 +1,5 @@
 // Individual chat box interface logic
 
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator";
@@ -28,6 +20,7 @@ export default function ChatView({ chat }) {
   if(currentChatId === chat.chatId) chatViewStyle += " border-r-sky-500"
 
   return (
+
    <Link className="h-full w-full group" to={`/chats/${chat.chatId}`}>
   <div className={chatViewStyle}>
     <Avatar>
@@ -47,3 +40,4 @@ export default function ChatView({ chat }) {
   <Separator className="my-2 hidden md:block" />
 </Link>
   )}
+

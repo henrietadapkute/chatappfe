@@ -49,7 +49,7 @@ export default function SheetSide() {
   const handleLogout = (e) => {
     logOut() 
     setUser()
-    navigate('/login')
+    navigate('/')
   }
 
 
@@ -100,7 +100,6 @@ export default function SheetSide() {
           </SheetTrigger>
           <SheetContent side={side}>
             <SheetHeader><div className="col-span-1">
-            <Button type="submit" onClick={handleLogout}>Log Out</Button>
             </div>
               <ModeToggle/>
               <SheetTitle>Edit profile</SheetTitle> 

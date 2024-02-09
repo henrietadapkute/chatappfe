@@ -1,35 +1,21 @@
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ChatView from "../ChatView/ChatView";
 import CreateChatForm from "../CreateChatForm/CreateChatForm"
 import { Button } from "@/components/ui/button";
-import { Plus, User } from "lucide-react";
+import { Plus } from "lucide-react";
 import SheetSide from "@/components/UserProfile/UserProfile"
 import { useEffect, useState } from "react";
-import sendRequest from "@/utilities/send-request"
 import { useChat } from "@/context/ChatContext";
 
 // List of conversations available
-export default function ChatListView({ isChatDeleted, handleChatDelete}) {
+export default function ChatListView() {
 
-  const { user, chats, setChats, getChatPreviews, messages } = useChat()
+  const { chats, getChatPreviews, messages } = useChat()
   const [showCreateChatForm, setShowCreateChatForm] = useState(false)
-  const [showProfileSheet, setShowProfileSheet] = useState(false)
 
   const toggleCreateChatForm = () => {
     setShowCreateChatForm(!showCreateChatForm)
-  }
-  const toggleProfileSheet = () => {
-    setShowProfileSheet(!showProfileSheet)
-   
   }
 
   const fetchChats = async () => {
@@ -46,8 +32,9 @@ export default function ChatListView({ isChatDeleted, handleChatDelete}) {
         <h2 className="text-3xl font-bold tracking-tight text-gray-900">
           <div className="bg-white dark:bg-black text-black dark:text-white">
           <div className="min-w-0 flex-auto hidden md:flex flex-col">
-        <img src={`${process.env.PUBLIC_URL}/chat.png`} alt="Logo" width={40} padding={50} />Messages        </div>
+        <img src={`${process.env.PUBLIC_URL}/chat.png`} alt="Logo" width={40} padding={50} />Messages</div>
           </div>
+
         </h2>
         <div className="self-end flex">
 <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
@@ -68,8 +55,6 @@ export default function ChatListView({ isChatDeleted, handleChatDelete}) {
 
       <ScrollArea className="h-full w-full">
         <div className="flex flex-col gap-2 pt-1">
-          
-          {showProfileSheet && <SheetSide />}
           {chats.map((chat) => (
           <ChatView key={chat.chatId} chat={chat} />
           )

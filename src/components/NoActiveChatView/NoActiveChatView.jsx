@@ -1,4 +1,4 @@
-import { Plus, User } from "lucide-react";
+import { Plus } from "lucide-react";
 
 export default function NoActiveChatView() {
     return (

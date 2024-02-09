@@ -1,12 +1,9 @@
 // Displays list of MessageViews()
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-
-import { Trash2, User } from 'lucide-react';
 import MessageView from "@/components/MessageView/MessageView"
 import DialogDemo from "@/components/OtherUserProfile/OtherUserProfile"
 import AlertOnDelete from "@/components/AlertOnDelete/AlertOnDelete"
@@ -19,33 +16,40 @@ import io from "socket.io-client";
 const socket = io.connect("http://localhost:4000");
 
 export default function MessageListView() {
-    const { chatId } = useParams()
-    const navigate = useNavigate()
-    const { messages, addMessage, getMessages, setMessages, chats, setCurrentChatId } = useChat()
-    const currentChat = chats.find((chat) => chat.chatId === chatId)
-    setCurrentChatId(chatId)
-    const [messageInput, setMessageInput] = useState('') 
-    const [isDialogOpen, setIsDialogOpen] = useState(false)
-    const [error, setError] = useState()
-    const [messageRecieved, setMessageRecieved] = useState('')
-    const [isAlertOpen, setIsAlertOpen] = useState(false)
-   
-    const handleCloseDialog = () => {
-        setIsDialogOpen(false)
+  const { chatId } = useParams();
+  const navigate = useNavigate();
+  const {
+    messages,
+    addMessage,
+    getMessages,
+    setMessages,
+    chats,
+    setCurrentChatId,
+  } = useChat();
+  const currentChat = chats.find((chat) => chat.chatId === chatId);
+  setCurrentChatId(chatId);
+
+  const [messageInput, setMessageInput] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [error, setError] = useState();
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+  
+  const handleEmojiSelect = (emoji) => {
+     setMessageInput(messageInput + emoji)
     }
 
-    const handleEmojiSelect = (emoji) => {
-        setMessageInput(messageInput + emoji)
-    }
+  const fetchMessages = () => {
+    getMessages(chatId);
+  };
 
-    const fetchMessages = () => {
-        getMessages(chatId)
-    }
-    
-    const handleChange = (evt) => {
-        setMessageInput(evt.target.value)
-    }
-
+  const handleChange = (evt) => {
+    setError();
+    setMessageInput(evt.target.value);
+  };
 
   const handleOpenProfile = () => {
     setIsDialogOpen(!isDialogOpen);
@@ -78,18 +82,11 @@ export default function MessageListView() {
     setMessageInput("");
   };
 
-  // Use Effect to receive Message
-
   useEffect(() => {
-    socket.on("receive_message", (data) => {
-      setMessageRecieved(data.messageInput);
+    socket.on("receive_message", () => {
       fetchMessages();
     });
   }, [socket]);
-
-  const deleteChat = async () => {
-    setIsAlertOpen(true);
-  };
 
   const deleteChatConfirm = async () => {
     try {
@@ -112,7 +109,19 @@ export default function MessageListView() {
       !isLastMessage && messages[i].senderId !== messages[i + 1].senderId;
     messages[i].highlight = isLastMessage || senderChangesNext;
   }
-  console.log(messages);
+  const lastReadByMessageIndex = {};
+
+messages.forEach((message, index) => {
+  message.readBy.forEach(userId => {
+    lastReadByMessageIndex[userId] = index;
+  });
+});
+
+const indexToUsersMap = Object.entries(lastReadByMessageIndex).reduce((acc, [userId, index]) => {
+  if (!acc[index]) acc[index] = [];
+  acc[index].push(userId);
+  return acc;
+}, {});
 
   return (
     <div className="flex flex-col h-full">
@@ -142,7 +151,7 @@ export default function MessageListView() {
             <MessageView
               key={message._id}
               message={message}
-              isLastofChain={false}
+              lastRead={indexToUsersMap[idx]}
               isLatest={idx === messages.length - 1}
             />
           ))}

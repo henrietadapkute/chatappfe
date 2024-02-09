@@ -7,15 +7,12 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -89,7 +86,7 @@ export default function LoginForm({ setUser }) {
               )}
             />
             <FormMessage>&nbsp;{error}</FormMessage>
-            <Button type="submit">Login</Button>
+            <Button className="w-full" type="submit">Login</Button>
           </form>
         </Form>
       </CardContent>
