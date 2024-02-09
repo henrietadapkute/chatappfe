@@ -13,7 +13,7 @@ import sendRequest from "@/utilities/send-request"
 
 // SOCKET
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:4000");
+const socket = io.connect(`${process.env.REACT_APP_WEBSOCKET}`);
 
 export default function MessageListView() {
   const { chatId } = useParams();
@@ -158,8 +158,9 @@ const indexToUsersMap = Object.entries(lastReadByMessageIndex).reduce((acc, [use
         </div>
       </ScrollArea>
       {error && <p>{error}</p>}
-      <form onSubmit={sendMessage} className="flex p-2">
+      <div className="flex mx-1">
         <EmojiView onEmojiSelect={handleEmojiSelect} />
+      <form onSubmit={sendMessage} className="flex flex-grow p-2">
         <Input
           value={messageInput}
           onChange={handleChange}
@@ -170,6 +171,7 @@ const indexToUsersMap = Object.entries(lastReadByMessageIndex).reduce((acc, [use
           Send
         </Button>
       </form>
+      </div>
     </div>
   );
 }

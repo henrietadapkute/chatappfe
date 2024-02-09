@@ -88,12 +88,12 @@ export default function SheetSide() {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className="">
       {SHEET_SIDES.map((side) => (
         <Sheet key={side} style={{ display: side === selectedSide ? "block" : "none" }}>
           <SheetTrigger asChild>
             
-            <Button className="flex justify-center items-center mx-2 w-10 h-10 border-2 border-gray-400 rounded-full hover:border-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 cursor-pointer">
+            <Button variant="outline">
               <User />
             </Button>
           

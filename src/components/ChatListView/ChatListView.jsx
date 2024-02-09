@@ -29,21 +29,22 @@ export default function ChatListView() {
   return (
     <div className="flex flex-col w-full h-full items-center justify-center p-2">
       <div className="flex w-full my-3 self-start justify-between">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-          <div className="bg-white dark:bg-black text-black dark:text-white">
+        
+          <div className="hidden md:flex text-black dark:text-white">
           <div className="min-w-0 flex-auto hidden md:flex flex-col">
-        <img src={`${process.env.PUBLIC_URL}/chat.png`} alt="Logo" width={40} padding={50} />Messages</div>
+        <img src={`${process.env.PUBLIC_URL}/chat.png`} alt="Logo" width={40} padding={50} />
+        <h2 className="text-3xl font-bold tracking-tight dark:text-white text-gray-900">
+        Messages</h2></div>
           </div>
 
-        </h2>
+        
         <div className="self-end flex">
-<div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-  <button
-    className="flex justify-center items-center mx-2 w-10 h-10 bg-blue-500 text-white rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+<div className="flex flex-col sm:flex-row md:mx-3 justify-center sm:items-start md:items-center gap-2">
+  <Button
     onClick={toggleCreateChatForm}
   >
     <Plus />
-  </button>
+  </Button>
   <SheetSide />
 </div>
       </div></div>
