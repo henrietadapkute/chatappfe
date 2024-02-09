@@ -19,7 +19,6 @@ export default function MainPage() {
 
   return (
     <div className="flex flex-col h-screen">
-     
       <ResizablePanelGroup
         direction="horizontal"
         className="flex-grow rounded-lg border"

@@ -24,7 +24,7 @@ const formSchema = z.object({
   }),
 })
 
-export default function CreateChatForm({onSuccessfulSubmit}) {
+export default function CreateChatForm({onSuccessfulSubmit, show, onClose}) {
   const [error, setError] = useState()
   const navigate = useNavigate()
   const { addChat } = useChat()
@@ -61,6 +61,10 @@ export default function CreateChatForm({onSuccessfulSubmit}) {
     }
 
   return (
+    <div
+  className={`fixed sm:relative inset-0 bg-black-600 dark:bg-black-800 sm:bg-transparent  sm:bg-opacity-0 overflow-y-auto h-full w-full sm:max-w-md mx-auto ${show ? 'block' : 'hidden'} z-40`}
+>
+  <div className="relative top-20 sm:top-0 mx-auto p-5 border w-11/12 sm:w-full shadow-lg rounded-md bg-white dark:bg-gray-700">
     <Form className="self-start w-full" {...form}>
     <form className="self-start w-full" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField 
@@ -77,12 +81,20 @@ export default function CreateChatForm({onSuccessfulSubmit}) {
             <FormDescription>
                 Enter a username
             </FormDescription>
-            <FormMessage>{error && <>{error}</>}</FormMessage>
+            <FormMessage className="text-red-500 dark:text-red-400">{error && <>{error}</>}</FormMessage>
             </FormItem>
         )}
         />
+        <button 
+  onClick={onClose} 
+  className="absolute top-0 right-0 p-2 text-black dark:text-white sm:hidden"
+>
+  X
+</button>
         <Button className="my-4" type="submit">Create Chat</Button>
     </form>
     </Form>
+    </div>
+</div>
   )
 }

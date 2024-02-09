@@ -92,9 +92,11 @@ export default function SheetSide() {
       {SHEET_SIDES.map((side) => (
         <Sheet key={side} style={{ display: side === selectedSide ? "block" : "none" }}>
           <SheetTrigger asChild>
-            <Button variant="outline">
+            
+            <Button className="flex justify-center items-center mx-2 w-10 h-10 border-2 border-gray-400 rounded-full hover:border-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 cursor-pointer">
               <User />
             </Button>
+          
           </SheetTrigger>
           <SheetContent side={side}>
             <SheetHeader><div className="col-span-1">

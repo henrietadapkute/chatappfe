@@ -28,22 +28,22 @@ export default function ChatView({ chat }) {
   if(currentChatId === chat.chatId) chatViewStyle += " border-r-sky-500"
 
   return (
-    <Link className="h-full w-full" to={`/chats/${chat.chatId}`}>
-      <div className={chatViewStyle}>
-        <Avatar>
-          <AvatarImage src={chat?.otherParticipant?.profileImage}/>
-          <AvatarFallback>{chat?.otherParticipant?.username[0]}</AvatarFallback>
-        </Avatar>
-        <div className="min-w-0 flex-auto">
-          <p className="text-sm font-semibold leading-6 text-gray-900">
-            <div className="bg-white dark:bg-black text-black dark:text-white">
-            {chat?.otherParticipant?.username}</div>
-          </p>
-          <p>{messagePreview}</p>
-        </div>
-          {!readLatest && <Badge className="h-4 w-4" variant="destructive"></Badge>}
-      </div>
-      <Separator className="my-2" />
-    </Link>
-  );
-}
+   <Link className="h-full w-full group" to={`/chats/${chat.chatId}`}>
+  <div className={chatViewStyle}>
+    <Avatar>
+      <AvatarImage src={chat?.otherParticipant?.profileImage} alt="Profile"/>
+      <AvatarFallback>{chat?.otherParticipant?.username[0]}</AvatarFallback>
+    </Avatar>
+    <div className="min-w-0 flex-auto hidden md:flex flex-col">
+      <p className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+        {chat?.otherParticipant?.username}
+      </p>
+      <p className="text-gray-600 dark:text-gray-400">{messagePreview}</p>
+    </div>
+    {!readLatest && (
+      <Badge className="h-4 w-4 md:ml-auto" variant="destructive" />
+    )}
+  </div>
+  <Separator className="my-2 hidden md:block" />
+</Link>
+  )}
