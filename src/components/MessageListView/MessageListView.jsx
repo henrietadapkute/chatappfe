@@ -5,53 +5,52 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import { Trash2, User } from "lucide-react";
-import MessageView from "@/components/MessageView/MessageView";
-import DialogDemo from "@/components/OtherUserProfile/OtherUserProfile";
-import AlertOnDelete from "@/components/AlertOnDelete/AlertOnDelete";
-import { useChat } from "@/context/ChatContext";
-import sendRequest from "@/utilities/send-request";
+
+import { Trash2, User } from 'lucide-react';
+import MessageView from "@/components/MessageView/MessageView"
+import DialogDemo from "@/components/OtherUserProfile/OtherUserProfile"
+import AlertOnDelete from "@/components/AlertOnDelete/AlertOnDelete"
+import EmojiView from "../EmojiView/EmojiView";
+import { useChat } from '@/context/ChatContext'
+import sendRequest from "@/utilities/send-request"
 
 // SOCKET
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:4000");
 
 export default function MessageListView() {
-  const { chatId } = useParams();
-  const navigate = useNavigate();
-  const {
-    messages,
-    addMessage,
-    getMessages,
-    setMessages,
-    chats,
-    setCurrentChatId,
-  } = useChat();
-  const currentChat = chats.find((chat) => chat.chatId === chatId);
-  setCurrentChatId(chatId);
+    const { chatId } = useParams()
+    const navigate = useNavigate()
+    const { messages, addMessage, getMessages, setMessages, chats, setCurrentChatId } = useChat()
+    const currentChat = chats.find((chat) => chat.chatId === chatId)
+    setCurrentChatId(chatId)
+    const [messageInput, setMessageInput] = useState('') 
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
+    const [error, setError] = useState()
+    const [messageRecieved, setMessageRecieved] = useState('')
+    const [isAlertOpen, setIsAlertOpen] = useState(false)
+   
+    const handleCloseDialog = () => {
+        setIsDialogOpen(false)
+    }
 
-  const [messageInput, setMessageInput] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [error, setError] = useState();
-  const [messageRecieved, setMessageRecieved] = useState("");
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
+    const handleEmojiSelect = (emoji) => {
+        setMessageInput(messageInput + emoji)
+    }
 
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-  };
+    const fetchMessages = () => {
+        getMessages(chatId)
+    }
+    
+    const handleChange = (evt) => {
+        setMessageInput(evt.target.value)
+    }
+
 
   const handleOpenProfile = () => {
     setIsDialogOpen(!isDialogOpen);
   };
-
-  const fetchMessages = () => {
-    getMessages(chatId);
-  };
-
-  const handleChange = (evt) => {
-    setMessageInput(evt.target.value);
-  };
-
+  
   useEffect(() => {
     joinRoom(chatId);
     return () => {
@@ -128,6 +127,7 @@ export default function MessageListView() {
             {isDialogOpen && <DialogDemo onClose={handleCloseDialog}/>}
 
         </div>
+
         <AlertOnDelete onDelete={deleteChatConfirm} />
         {isAlertOpen && (
           <AlertOnDelete
@@ -150,6 +150,7 @@ export default function MessageListView() {
       </ScrollArea>
       {error && <p>{error}</p>}
       <form onSubmit={sendMessage} className="flex p-2">
+        <EmojiView onEmojiSelect={handleEmojiSelect} />
         <Input
           value={messageInput}
           onChange={handleChange}
