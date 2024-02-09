@@ -5,7 +5,7 @@ import MainPage from "../MainPage/MainPage";
 
 import { useChat } from "@/context/ChatContext";
 
-function App() {
+export default function App() {
   const { user, setUser } = useChat();
 
   useEffect(() => {
@@ -22,4 +22,4 @@ function App() {
 
   return <div>{!user ? <AuthPage /> : <MainPage />}</div>;
 
-export default App;
+}
