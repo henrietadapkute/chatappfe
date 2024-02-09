@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { Link } from 'react-router-dom'
 import { useChat } from "@/context/ChatContext";
 
+
 export default function ChatView({ chat }) {
   const { user, currentChatId } = useChat()
   const maxPreviewLength = 30
@@ -20,7 +21,6 @@ export default function ChatView({ chat }) {
   if(currentChatId === chat.chatId) chatViewStyle += " border-r-sky-500"
 
   return (
-
    <Link className="h-full w-full group" to={`/chats/${chat.chatId}`}>
   <div className={chatViewStyle}>
     <Avatar>

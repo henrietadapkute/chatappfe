@@ -22,6 +22,4 @@ function App() {
 
   return <div>{!user ? <AuthPage /> : <MainPage />}</div>;
 
-}
-
 export default App;
