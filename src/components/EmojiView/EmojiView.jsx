@@ -47,7 +47,7 @@ export default function EmojiView({ onEmojiSelect }) {
                 <SmilePlus className="w-6 h-6" />
             </button>
             {isVisible && (
-                <div className="absolute top-full mt-2 bg-white shadow-md rounded-lg p-4 w-64 z-10 border border-gray-200">
+                <div className="absolute bottom-full mt-2 bg-white shadow-md rounded-lg p-4 w-64 z-10 border border-gray-200">
                     <div className="flex justify-around mb-4">
                         {Object.entries(categories).map(([key, emoji]) => (
                             <button
