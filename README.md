@@ -1,70 +1,100 @@
-# Getting Started with Create React App
+# C.I.C.E
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
+A MERN stack messaging application using Websockets to provide seamless communication between users, built by a team of two. As a two-person team we developed a feature-rich messaging application, emphasising seamless communication and user-centric functionality.
 
-## Available Scripts
+## Deployment link
+Project: [C.I.C.E](https://cicefe.netlify.app/)
+Backend: [Link here](https://github.com/henrietadapkute/recipebe)
 
-In the project directory, you can run:
+To view the features of the app, please create an account.
 
-### `npm start`
+## Timeframe
+7 days 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Goal
+A solo project to design a full-stack React app using Express,Node.js and MongoDB.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies Used
+- React.js
+- Node.js
+- Express.js
+- MongoDB
+- ShadCN
+- Tailwind CSS
+- Sockets.io
+- react-router-dom
+- Craco
+- Bcrypt
+- Mongoose
+- Git
+- jsonwebtoken
+- zod
 
-### `npm test`
+## Planning
+### Wireframes and ERD
+Using Excalidraw, we drew out wireframes to visualise the application's layout and design, keeping in mind that we would use ShadCN and Tailwind CSS later on. In parallel, an Entity-Relationship Diagram (ERD) was planned to map out the relationships between different data entities, ensuring a well-structured database. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![image](https://github.com/henrietadapkute/chatappfe/assets/112635209/0e6f6897-cf50-435d-81c6-cd200f977da4)
+![68747470733a2f2f696d6775722e636f6d2f634f46455858662e706e67](https://github.com/henrietadapkute/chatappfe/assets/112635209/21e313a6-19c6-47fd-b912-6ad3fe2dd0cb)
 
-### `npm run build`
+### User Stories and Trello
+As a team, we created User Stories to outline the functionality from the user's perspective. Trello became our organisational hub, with boards structured to save information about possible API integrations for emojis, and Websockets, utilising the Icebox method for prioritisation. Sections for research into Trello helped in planning and resource allocation.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![image](https://github.com/henrietadapkute/chatappfe/assets/112635209/eaa2f21e-9148-430c-8433-a76e9790c3a7)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Process
+### Day 1 & 2
+Our development process for C.I.C.E started with planning wireframes and an ERD.  Together we worked on user stories, organised using Trello by priority. We used Tailwind CSS and Shadcn for the UI, and we also kept this in mind when creating the wireframes before starting the coding process . Daily stand-up meetings ensured communication and goal alignment. During our first weekend, my team-mate implemented basic front page design, as a team we implemented user authorisation using JWT tokens.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![68747470733a2f2f696d6775722e636f6d2f46756b58544a612e706e67](https://github.com/henrietadapkute/chatappfe/assets/112635209/4b714311-3ba0-45a4-8063-234b4de37d36)
 
-### `npm run eject`
+### Day 3
+**Backend**
+Implemented fundamental models, routes, and controllers, establishing a connection between the application and the MongoDB database. 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Frontend**
+Started on the basic UI for the Login/Sign-up pages. Implemented the message list view and chat view, incorporating message card UI elements within the message list view on the homepage.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Day 4
+**Frontend**
+Linked the plus button on the homepage to create a new chat/conversation. Set up the Message View Page UI, laying down the basic framework. Created the ChatListView page to pull data from the backend, utilising it to generate Chatview components.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+MessageListView primary function is to display messages exchanged within a specific chat conversation. Using React hooks like useState and useEffect, it manages state variables for message input, dialogue visibility, error handling, and alert prompts. The component dynamically renders MessageView components for each message, including features such as message highlighting and tracking last-read messages. 
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Day 5
+**Frontend & Backend**
+Successfully implemented the creation and display of messages in the message list view. The MessageListView component interacts with the chat context to access messages, add new messages, fetch messages for a specific chat, and handles message deletion. I included UI elements like buttons, inputs, and emoji selectors for sending messages and managing chat-related actions. Enabled users to view and edit their profiles. Worked on group chat logic and integrated it into the application.
 
-## Learn More
+Implemented a few tweaks to the backend to ensure the group chat integration in the frontend works as expected.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Day 6
+**Backend & Frontend**
+Established Websockets for live notifications and real-time messaging, using event handlers between the backend and frontend. Created UI elements to highlight the currently selected chat. Implemented the functionality to view other users' profiles by clicking on their profile picture at the top of the chat by using a modal. Converted the message input into a form for easier message entry and sending. Integrated an emoji API, and created a simple UI that filters through emoji categories, allowing users to search emojis and view multiple at a time. This feature is to be used on the desktop.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Day 7
+**Frontend**
+Polished the UI, focusing on enhancing mobile responsiveness, as well as light mode and dark mode. Incorporated adjustments to ensure a seamless user experience across various devices. The final day was dedicated to optimising performance, and addressing any remaining issues/bugs. 
 
-### Code Splitting
+## Challenges
+**Websockets**: Implementing Websockets for real-time communication presented a learning curve. Understanding the intricacies of Websockets, such as establishing connections and handling events, required dedicated time and effort. Overcoming this challenge contributed to an impressive application.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Styling**: Tailwind CSS, was challenging to work with due to its utility-first approach. Ensuring consistency in styling and understanding the utility classes was something that required more time, reading and researching documentation. The challenge was overcome through practice and a commitment to achieving a polished UI and neat mobile responsiveness. 
 
-### Analyzing the Bundle Size
+**Git/Github**: Working together on Git and GitHub, using development branches, pushing and pulling code, and staying in the loop presented some challenges. Handling merging issues as a team, taught us a lot. Solving problems and comparing code made GitHub collaboration more straightforward and enjoyable for our team.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Wins
+**Websockets**: Implementing Socket.io for real-time communication was a significant achievement. This feature enhanced the application's responsiveness and interactivity. Users can enjoy instant messaging, and creating group chats. 
 
-### Making a Progressive Web App
+**CRUD operations**: Implementation of CRUD operations allows users to manage conversations, edit profiles, and perform various actions seamlessly.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+**Styling**: Using Tailwind CSS and Shadcn has resulted in a visually appealing and modern user interface. I am particularly proud of this UI, as it is also mobile-friendly. 
 
-### Advanced Configuration
+## Key Learnings
+- Installation and implementation of WebSockets for real-time communication.
+- Mastery of Tailwind CSS for efficient UI development.
+- Solidifying confidence working with MongoDB and Postman.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Future Improvements
+- Implement CRUD for editing group titles and other group functionalities.
+- Allow users to upload pictures using AWS.
